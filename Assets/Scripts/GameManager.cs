@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     private Timer timer;
     private float startTime;
-    private float gameTime;
+    private float gameTime = 20;
     private float endTime;
 
     private void Awake()
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        State = GameState.Start;
+        State = GameState.Game;
     }
 
     private void Update()

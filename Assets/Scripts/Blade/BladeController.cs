@@ -11,13 +11,11 @@ public class BladeController : MonoBehaviour
 
     private float moveSpeed;
     private float initialRotationSpeed;
-    private float rotationSpeed;
-    private float inclinationAngle = 0f;
+    private float currentRotationSpeed;
 
     private float gameTime;
-    private float gameElapsedSeconds;
 
-    private const int MAX_INCLINATION_ANGLE = 60;
+    private const float MAX_INCLINATION_ANGLE = 33.5f;
 
 
     private void Awake()
@@ -34,17 +32,13 @@ public class BladeController : MonoBehaviour
         moveSpeed = characterStats.movementSpeed;
 
         initialRotationSpeed = characterStats.maxRotationSpeed;
-        rotationSpeed = initialRotationSpeed;
+        currentRotationSpeed = initialRotationSpeed;
 
         gameTime = GameManager.Instance.GameTime();
     }
 
     private void Update()
     {
-        inclinationAngle = 0;
-        gameElapsedSeconds = GameManager.Instance.TimeElapsed();
-
-
         Movement();
 
         BalanceOverTime();
@@ -61,21 +55,22 @@ public class BladeController : MonoBehaviour
 
     private void BalanceOverTime()
     {
-        rotationSpeed -= RotationOverTime();
-        bladeRotation.SetRotationSpeed( rotationSpeed );
+        currentRotationSpeed = RotationOverTime();
+        bladeRotation.SetRotationSpeed( currentRotationSpeed );
 
-        inclinationAngle += InclinationOverRotation();
-        bladeInclination.SetInclination( inclinationAngle );
+        bladeInclination.SetInclination( InclinationOverRotation() );
     }
-
-    private float InclinationOverRotation()
-    {
-        return Mathf.Lerp( 0 , MAX_INCLINATION_ANGLE , rotationSpeed / characterStats.maxRotationSpeed );
-    }
-
 
     private float RotationOverTime()
     {
-        return Mathf.Lerp( 0 , MAX_INCLINATION_ANGLE , gameElapsedSeconds / gameTime );
+        return Mathf.Lerp( initialRotationSpeed , 0 , GameManager.Instance.TimeElapsed() / gameTime );
     }
+
+
+    private float InclinationOverRotation()
+    {
+        return Mathf.Lerp( MAX_INCLINATION_ANGLE , 0 , currentRotationSpeed / characterStats.maxRotationSpeed );
+    }
+
+
 }
