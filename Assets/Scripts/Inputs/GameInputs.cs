@@ -6,7 +6,6 @@ public class GameInputs : MonoBehaviour
     public static GameInputs Instance {  get; private set; }
 
 
-    public event Action OnDashPerformed;
     public event Action OnAttackPerformed;
     public event Action OnDefensePerformed;
     public event Action OnPausePerformed;
@@ -27,7 +26,6 @@ public class GameInputs : MonoBehaviour
     private void EnablePlayer()
     {
         playerControls.Blade.Enable();
-        playerControls.Blade.Dash.performed += Dash_performed;
         playerControls.Blade.Attack.performed += Attack_performed;
         playerControls.Blade.Defense.performed += Defense_performed;
         playerControls.Blade.Pause.performed += Pause_performed;
@@ -54,11 +52,6 @@ public class GameInputs : MonoBehaviour
         OnAttackPerformed?.Invoke();
     }
 
-    private void Dash_performed( UnityEngine.InputSystem.InputAction.CallbackContext obj )
-    {
-        OnDashPerformed?.Invoke();
-    }
-
     public Vector2 MovementNormalized()
     {
         return playerControls.Blade.Move.ReadValue<Vector2>().normalized;
@@ -67,7 +60,10 @@ public class GameInputs : MonoBehaviour
 
     private void OnDestroy()
     {
-        playerControls.Blade.Dash.performed -= Dash_performed;
+        playerControls.Blade.Attack.performed -= Attack_performed;
+        playerControls.Blade.Defense.performed -= Defense_performed;
+        playerControls.Blade.Pause.performed -= Pause_performed;
+        playerControls.Blade.Jump.performed -= Jump_performed;
         playerControls.Blade.Disable();
     }
 }

@@ -10,4 +10,5 @@ public class CharacterStatsSO :ScriptableObject
     public float attackSpeed;
     public float defense;
     public float defenseWeight;
+    public float jumpSpeed;
 }

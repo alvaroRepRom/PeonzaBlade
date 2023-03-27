@@ -64,15 +64,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Dash"",
-                    ""type"": ""Button"",
-                    ""id"": ""de81fa4d-b8ac-4761-83d9-b7550d180108"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""6ca024d1-8471-46fb-a76d-7fe50b543df4"",
@@ -195,28 +186,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""dd7ecaf8-eddf-4100-860d-c338c1147dce"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""213322f1-3a16-489d-858d-d58870b9bdaa"",
-                    ""path"": ""<Keyboard>/l"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""47f9e1a9-dbeb-404b-b8c5-0297a81e2a2f"",
                     ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
@@ -270,7 +239,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Blade_Attack = m_Blade.FindAction("Attack", throwIfNotFound: true);
         m_Blade_Defense = m_Blade.FindAction("Defense", throwIfNotFound: true);
         m_Blade_Jump = m_Blade.FindAction("Jump", throwIfNotFound: true);
-        m_Blade_Dash = m_Blade.FindAction("Dash", throwIfNotFound: true);
         m_Blade_Pause = m_Blade.FindAction("Pause", throwIfNotFound: true);
     }
 
@@ -337,7 +305,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Blade_Attack;
     private readonly InputAction m_Blade_Defense;
     private readonly InputAction m_Blade_Jump;
-    private readonly InputAction m_Blade_Dash;
     private readonly InputAction m_Blade_Pause;
     public struct BladeActions
     {
@@ -347,7 +314,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_Blade_Attack;
         public InputAction @Defense => m_Wrapper.m_Blade_Defense;
         public InputAction @Jump => m_Wrapper.m_Blade_Jump;
-        public InputAction @Dash => m_Wrapper.m_Blade_Dash;
         public InputAction @Pause => m_Wrapper.m_Blade_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Blade; }
         public void Enable() { Get().Enable(); }
@@ -370,9 +336,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Dash.started += instance.OnDash;
-            @Dash.performed += instance.OnDash;
-            @Dash.canceled += instance.OnDash;
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
@@ -392,9 +355,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Dash.started -= instance.OnDash;
-            @Dash.performed -= instance.OnDash;
-            @Dash.canceled -= instance.OnDash;
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
@@ -421,7 +381,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnDefense(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnDash(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
     }
 }

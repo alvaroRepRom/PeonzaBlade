@@ -9,6 +9,7 @@ public struct CharacterStats
     public float attackSpeed;
     public float defense;
     public float defenseWeight;
+    public float jumpSpeed;
 
     public CharacterStats( CharacterStatsSO characterStatsSO )
     {
@@ -16,8 +17,9 @@ public struct CharacterStats
         movementSpeed = characterStatsSO.movementSpeed;
         maxRotationSpeed = characterStatsSO.maxRotationSpeed;
         attack = characterStatsSO.attack;
-        attackSpeed = characterStatsSO.defense;
+        attackSpeed = characterStatsSO.attackSpeed;
         defense = characterStatsSO.defense;
         defenseWeight = characterStatsSO.defenseWeight;
+        jumpSpeed = characterStatsSO.jumpSpeed;
     }
 }

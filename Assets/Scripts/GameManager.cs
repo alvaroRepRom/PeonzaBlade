@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         timer = new Timer( startTime );
+        Application.targetFrameRate = 60;
     }
 
 

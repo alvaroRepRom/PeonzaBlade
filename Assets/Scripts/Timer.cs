@@ -30,6 +30,16 @@ public class Timer
         }
         return false;
     }
+    
+    public bool HasTimeUpOnce()
+    {
+        timer -= Time.deltaTime;
+        if ( timer <= 0 )
+        {
+            return true;
+        }
+        return false;
+    }
 
     public void SetNewTime( float timeSeconds )
     {
