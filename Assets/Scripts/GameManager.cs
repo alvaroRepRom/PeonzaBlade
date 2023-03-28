@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     }
 
     public GameState State { get; private set; }
+    public bool IsGameActive { get; private set; }
+
 
     private Timer timer;
     private float startTime;

@@ -34,11 +34,7 @@ public class Timer
     public bool HasTimeUpOnce()
     {
         timer -= Time.deltaTime;
-        if ( timer <= 0 )
-        {
-            return true;
-        }
-        return false;
+        return timer <= 0;
     }
 
     public void SetNewTime( float timeSeconds )

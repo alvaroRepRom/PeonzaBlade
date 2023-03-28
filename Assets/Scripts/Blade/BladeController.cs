@@ -8,6 +8,7 @@ public class BladeController : MonoBehaviour
     private Rigidbody rb;
     private BladeRotation bladeRotation;
     private BladeInclination bladeInclination;
+    private TurnCharacter turnCharacter;
     private float gameTime;
 
     [Header("Movement")]
@@ -30,6 +31,8 @@ public class BladeController : MonoBehaviour
 
     [Header("Jump")]
     private bool isJumping;
+    private float fallForceMultiplier = 1.8f;
+    private bool isGrounded = true;
 
 
     private const float MAX_INCLINATION_ANGLE = 33.5f;
@@ -42,6 +45,7 @@ public class BladeController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         bladeRotation = GetComponentInChildren<BladeRotation>();
         bladeInclination = GetComponentInChildren<BladeInclination>();
+        turnCharacter = GetComponentInChildren<TurnCharacter>();
     }
 
     private void Start()
@@ -64,35 +68,36 @@ public class BladeController : MonoBehaviour
 
     private void GameInputs_OnJumpPerformed()
     {
-        if ( canExecuteAction )
-        {
-            isJumping = true;
-            rb.AddForce( characterStats.jumpSpeed * Vector3.up , ForceMode.VelocityChange );
-        }
+        if ( !canExecuteAction ) return;
+
+        canExecuteAction = false;
+        isJumping = true;
+        isGrounded = false;
+        rb.velocity = new Vector3( rb.velocity.x , 0 , rb.velocity.z );
+        rb.AddForce( characterStats.jumpSpeed * Vector3.up , ForceMode.VelocityChange );
+
     }
 
     private void GameInputs_OnDefensePerformed()
     {
-        if ( canExecuteAction )
-        {
-            canExecuteAction = false;
-            isDefending = true;
-            actionTimer.SetNewTime( secondsDefending );
-            rb.mass = characterStats.defenseWeight;
-            rb.velocity = Vector3.zero;
-        }
+        if ( !canExecuteAction ) return;
+
+        canExecuteAction = false;
+        isDefending = true;
+        actionTimer.SetNewTime( secondsDefending );
+        rb.mass = characterStats.defenseWeight;
+        rb.velocity = Vector3.zero;
     }
 
     private void GameInputs_OnAttackPerformed()
     {
-        if ( canExecuteAction )
-        {
-            canExecuteAction = false;
-            isAttacking = true;
-            actionTimer.SetNewTime( secondsAttacking );
-            rb.velocity = Vector3.zero;
-            rb.AddForce( characterStats.attackSpeed * moveDirection , ForceMode.VelocityChange );
-        }
+        if ( !canExecuteAction ) return;
+
+        canExecuteAction = false;
+        isAttacking = true;
+        actionTimer.SetNewTime( secondsAttacking );
+        rb.velocity = Vector3.zero;
+        rb.AddForce( characterStats.attackSpeed * moveDirection , ForceMode.VelocityChange );
     }
 
     private void Update()
@@ -101,12 +106,25 @@ public class BladeController : MonoBehaviour
         AttackDash();
         DefenseAction();
         JumpControl();
+        turnCharacter.SetCharacterForwardDirection( moveDirection );
         BalanceOverTime();
     }
 
     private void FixedUpdate()
     {
+        FallGravity();
+        Move();
+    }
+
+    private void Move()
+    {
         rb.AddForce( moveSpeed * moveDirection , ForceMode.Force );
+    }
+
+    private void FallGravity()
+    {
+        if ( isJumping && rb.velocity.y < 0 )
+            rb.AddForce( fallForceMultiplier * Vector3.down , ForceMode.Force );
     }
 
     private void MoveInput()
@@ -159,16 +177,19 @@ public class BladeController : MonoBehaviour
 
     private void JumpControl()
     {
-        if ( isJumping && IsGrounded() )
+        if ( isJumping && isGrounded )
         {
             canExecuteAction = true;
             isJumping = false;
         }
     }
 
-    private bool IsGrounded()
+    private void OnCollisionEnter( Collision collision )
     {
-        return true;
+        if ( collision.gameObject.layer == 6 )
+        {
+            isGrounded = true;
+        }
     }
 
 
