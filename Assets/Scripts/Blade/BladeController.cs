@@ -144,7 +144,8 @@ public class BladeController : MonoBehaviour
 
     private float RotationOverTime()
     {
-        return Mathf.Lerp( initialRotationSpeed , 0 , GameManager.Instance.TimeElapsed() / gameTime );
+        return initialRotationSpeed;
+        //return Mathf.Lerp( initialRotationSpeed , 0 , GameManager.Instance.TimeElapsed() / gameTime );
     }
 
 
