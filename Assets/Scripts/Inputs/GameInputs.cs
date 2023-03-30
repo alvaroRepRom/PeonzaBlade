@@ -27,6 +27,7 @@ public class GameInputs : MonoBehaviour
         playerInput.actions.FindAction( "Defense" ).performed += Defense_performed;
         playerInput.actions.FindAction( "Pause" ).performed += Pause_performed;
         playerInput.actions.FindAction( "Jump" ).performed += Jump_performed;
+
     }
 
     private void Jump_performed( InputAction.CallbackContext ctx )

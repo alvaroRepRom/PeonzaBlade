@@ -55,6 +55,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2076266102603505195}
   - component: {fileID: 3462244946141187303}
+  - component: {fileID: 5693273827904436595}
   m_Layer: 0
   m_Name: Character Visual
   m_TagString: Untagged
@@ -87,6 +88,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54d32973c102eca42a727b9082951e49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5693273827904436595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3489380007171291072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625d1349616033248a555d5526889af6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7463158441270162973
@@ -215,6 +228,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterStatsSO: {fileID: 0}
+  bladeInclination: {fileID: 2360390787117813112}
+  characterInclination: {fileID: 5693273827904436595}
 --- !u!114 &1564704336876592536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abfc24a706b028f4e8d6df0fbebfbefd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerIndex: -1
 --- !u!114 &4605083484887407115
 MonoBehaviour:
   m_ObjectHideFlags: 0
