@@ -34,9 +34,9 @@ public class BladeController : MonoBehaviour
     private float fallForceMultiplier = 1.8f;
     private bool isGrounded = true;
 
-
     private const float MAX_INCLINATION_ANGLE = 33.5f;
 
+    private GameInputs gameInputs;
 
     private void Awake()
     {
@@ -60,10 +60,10 @@ public class BladeController : MonoBehaviour
 
         gameTime = GameManager.Instance.GameTime();
 
-
-        GameInputs.Instance.OnAttackPerformed += GameInputs_OnAttackPerformed;
-        GameInputs.Instance.OnDefensePerformed += GameInputs_OnDefensePerformed;
-        GameInputs.Instance.OnJumpPerformed += GameInputs_OnJumpPerformed;
+        gameInputs = GetComponent<GameInputs>();
+        gameInputs.OnAttackPerformed += GameInputs_OnAttackPerformed;
+        gameInputs.OnDefensePerformed += GameInputs_OnDefensePerformed;
+        gameInputs.OnJumpPerformed += GameInputs_OnJumpPerformed;
     }
 
     private void GameInputs_OnJumpPerformed()
@@ -129,7 +129,7 @@ public class BladeController : MonoBehaviour
 
     private void MoveInput()
     {
-        Vector2 moveInput = GameInputs.Instance.MovementNormalized();
+        Vector2 moveInput = gameInputs.MovementNormalized();
         moveDirection = new Vector3( moveInput.x , 0 , moveInput.y );
     }
 
@@ -195,9 +195,9 @@ public class BladeController : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameInputs.Instance.OnAttackPerformed -= GameInputs_OnAttackPerformed;
-        GameInputs.Instance.OnDefensePerformed -= GameInputs_OnDefensePerformed;
-        GameInputs.Instance.OnJumpPerformed -= GameInputs_OnJumpPerformed;
+        gameInputs.OnAttackPerformed -= GameInputs_OnAttackPerformed;
+        gameInputs.OnDefensePerformed -= GameInputs_OnDefensePerformed;
+        gameInputs.OnJumpPerformed -= GameInputs_OnJumpPerformed;
     }
 
 }
