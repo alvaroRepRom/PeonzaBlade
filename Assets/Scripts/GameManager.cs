@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,9 +26,10 @@ public class GameManager : MonoBehaviour
 
 
     private Timer timer;
-    private bool isGameReady = false;
+    private bool isPlayersSet = false;
     private float startTime = 20;
     private float gameTime = 120;
+
 
     private void Awake()
     {
@@ -45,7 +47,7 @@ public class GameManager : MonoBehaviour
 
     private void MultiplayerInputManager_OnAllPlayersReady()
     {
-        Preparation();
+        isPlayersSet = true;
     }
 
     private void Update()
@@ -70,10 +72,11 @@ public class GameManager : MonoBehaviour
 
     private void Preparation()
     {
-        if ( isGameReady )
+        if ( isPlayersSet )
         {
             State = GameState.Start;
             timer = new Timer( startTime );
+            Debug.Log( "To launch blade" );
         }
     }
 
@@ -83,6 +86,7 @@ public class GameManager : MonoBehaviour
         {
             timer.SetNewTime( gameTime );
             State = GameState.Game;
+            Debug.Log( "To game" );
         }
     }
 
@@ -91,6 +95,7 @@ public class GameManager : MonoBehaviour
         if ( timer.HasTimeUp() )
         {
             State = GameState.End;
+            Debug.Log( "To results" );
         }
     }
 

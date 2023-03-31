@@ -48,6 +48,11 @@ public class BladeController : MonoBehaviour
         turnCharacter = GetComponentInChildren<TurnCharacter>();
     }
 
+    public void SetGameInputs( GameInputs gameInputs )
+    {
+        this.gameInputs = gameInputs;
+    }
+
     private void Start()
     {
         moveSpeed = characterStats.movementSpeed;

@@ -10,7 +10,7 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
     [SerializeField] private GameObject readyText;
 
     [Header("Characters SO")]
-    [SerializeField] private CharacterStatsSO[] charactersStatsSO;
+    [SerializeField] private CharacterListSO characterListSO;
 
     GameInputs gameInputs;
     private int playerIndex;
@@ -27,7 +27,10 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
     private void MultiplayerInputManager_OnPlayerLeft( int playerLeftIndex )
     {
         if ( playerIndex.Equals( playerLeftIndex ) )
+        {
+            SpawnBladeManager.Instance.CancelPlayerCharacter( playerIndex );
             Destroy( gameObject );
+        }
     }
 
     private void Update()
@@ -53,11 +56,11 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
         {
             characterSelectIndex += addIndex;
 
-            if ( characterSelectIndex >= charactersStatsSO.Length )
+            if ( characterSelectIndex >= characterListSO.list.Length )
                 characterSelectIndex = 0;
             else
             if ( characterSelectIndex < 0 )
-                characterSelectIndex = charactersStatsSO.Length - 1;
+                characterSelectIndex = characterListSO.list.Length - 1;
 
             SetPlayerImage();
             navDirection = GameInputs.NavDirection.NONE;
@@ -66,7 +69,7 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
 
     public void SetPlayerImage()
     {
-        playerImage.sprite = charactersStatsSO[characterSelectIndex].characterImage;
+        playerImage.sprite = characterListSO.list[characterSelectIndex].characterImage;
     }
 
     public void SetPlayerInput( GameInputs playerGameInputs , int playerIndex )
@@ -81,37 +84,43 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
         gameObject.name = "Player " + ( playerIndex + 1 );
     }
 
-
-
-    private void SelectCharacter()
+    
+    private void GameInputs_OnSubmitPerformed()
     {
         isReady = true;
         characterSelectionButton.interactable = false;
         readyText.SetActive( true );
+
+        SpawnBladeManager.Instance.SetPlayerCharacter( playerIndex , new PlayerSelectionArgs( 
+                                                                    characterSelectIndex , gameInputs ) );
+
         MultiplayerInputManager.Instance.SetPlayerReady( playerIndex );
     }
 
-    private void ReturnToSelectCharacter()
+    private void GameInputs_OnCancelPerformed()
     {
         isReady = false;
         characterSelectionButton.interactable = true;
         readyText.SetActive( true );
         MultiplayerInputManager.Instance.PlayerNotReady( playerIndex );
-    }
-
-    
-    private void GameInputs_OnSubmitPerformed()
-    {
-        SelectCharacter();
-    }
-
-    private void GameInputs_OnCancelPerformed()
-    {
-        ReturnToSelectCharacter();
+        SpawnBladeManager.Instance.CancelPlayerCharacter( playerIndex );
     }
 
     private void GameInputs_OnNavigationPerformed( GameInputs.NavDirection dir )
     {
         navDirection = dir;
+    }
+
+    private void OnDestroy()
+    {
+        if ( MultiplayerInputManager.Instance != null )
+            MultiplayerInputManager.Instance.OnPlayerLeft -= MultiplayerInputManager_OnPlayerLeft;
+
+        if ( gameInputs != null )
+        {
+            gameInputs.OnNavigationPerformed -= GameInputs_OnNavigationPerformed;
+            gameInputs.OnSubmitPerformed -= GameInputs_OnSubmitPerformed;
+            gameInputs.OnCancelPerformed -= GameInputs_OnCancelPerformed;
+        }
     }
 }

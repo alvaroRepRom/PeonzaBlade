@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 public class MultiplayerInputManager : MonoBehaviour
 {
     public event Action OnAllPlayersReady;
-
     public event Action<GameInputs, int> OnPlayerJoined;
     public Action<int> OnPlayerLeft;
 
@@ -14,8 +13,8 @@ public class MultiplayerInputManager : MonoBehaviour
 
 
     private Dictionary<int, bool> playersReadyDict = new Dictionary<int, bool>();
-
     private PlayerInputManager playerInputManager;
+
 
     private void Awake()
     {
