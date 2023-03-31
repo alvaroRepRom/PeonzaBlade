@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpriteCreator : MonoBehaviour
@@ -9,8 +10,13 @@ public class SpriteCreator : MonoBehaviour
     int width = 1024;
     int depth = 24;
 
+    private void Start()
+    {
+        SaveTexture( CaptureScreen() );
+    }
+
     //method to render from camera
-    public Sprite CaptureScreen()
+    public Texture2D CaptureScreen()
     {
         RenderTexture renderTexture = new RenderTexture(width, height, depth);
         Rect rect = new Rect(0,0,width,height);
@@ -30,6 +36,22 @@ public class SpriteCreator : MonoBehaviour
 
         Sprite sprite = Sprite.Create(texture, rect, Vector2.zero);
 
-        return sprite;
+        return texture;
+    }
+
+    private void SaveTexture( Texture2D texture )
+    {
+        byte[] bytes = texture.EncodeToPNG();
+        var dirPath = Application.dataPath + "/Art";
+        if ( !System.IO.Directory.Exists( dirPath ) )
+        {
+            System.IO.Directory.CreateDirectory( dirPath );
+        }
+
+        System.IO.File.WriteAllBytes( dirPath + "/R_" + Random.Range( 0 , 100000 ) + ".png" , bytes );
+        Debug.Log( bytes.Length / 1024 + "Kb was saved as: " + dirPath );
+#if UNITY_EDITOR
+        UnityEditor.AssetDatabase.Refresh();
+#endif
     }
 }
