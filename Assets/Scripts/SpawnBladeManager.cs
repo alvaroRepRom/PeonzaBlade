@@ -24,13 +24,13 @@ public class SpawnBladeManager : MonoBehaviour
     {
         for (int i = 0; i < playerSelectionDict.Count; i++)
         {
-            Debug.Log( "Go blade" );
             int characterSelectedIndex = playerSelectionDict[i].characterSelectedIndex;
 
             GameObject blade = Instantiate( characterListSO.list[characterSelectedIndex].characterPrefab );
 
             GameInputs gameInputs = playerSelectionDict[i].gameInputs;
             gameInputs.SwitchUItoGameInputs();
+
             blade.GetComponent<BladeController>().SetGameInputs( gameInputs );
         }
     }

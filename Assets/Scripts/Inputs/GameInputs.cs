@@ -45,15 +45,7 @@ public class GameInputs : MonoBehaviour
 
     public void SwitchUItoGameInputs()
     {
-        //playerInput.currentActionMap.Disable();
         playerInput.SwitchCurrentActionMap( "Blade" );
-        //playerInput.currentActionMap.Enable();
-        // Game
-        //moveAction = playerInput.actions.FindAction( "Move" );
-        //playerInput.actions.FindAction( "Attack" ).performed += Attack_performed;
-        //playerInput.actions.FindAction( "Defense" ).performed += Defense_performed;
-        //playerInput.actions.FindAction( "Pause" ).performed += Pause_performed;
-        //playerInput.actions.FindAction( "Jump" ).performed += Jump_performed;
     }
 
     private void Navigation_performed( InputAction.CallbackContext ctx )
