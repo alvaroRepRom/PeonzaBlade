@@ -159,8 +159,6 @@ GameObject:
   - component: {fileID: 5212743817304744133}
   - component: {fileID: 280864263}
   - component: {fileID: 8574843583652391745}
-  - component: {fileID: 1564704336876592536}
-  - component: {fileID: 4605083484887407115}
   m_Layer: 0
   m_Name: PeonzaBladeBase
   m_TagString: Untagged
@@ -228,71 +226,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterStatsSO: {fileID: 0}
-  bladeInclination: {fileID: 2360390787117813112}
-  characterInclination: {fileID: 5693273827904436595}
---- !u!114 &1564704336876592536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8574843583652391751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abfc24a706b028f4e8d6df0fbebfbefd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerIndex: -1
---- !u!114 &4605083484887407115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8574843583652391751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 40aa13b2d6355ea41b6ed9929b973f9e, type: 3}
-  m_NotificationBehavior: 3
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 52a8108c-f7fc-4542-93a2-517331983f39
-    m_ActionName: Blade/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: b1e04243-4079-4446-a0ff-a1df04de35e8
-    m_ActionName: Blade/Attack[/Keyboard/j]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6ddc94dd-e0cc-4329-a0c3-1fdf933af42a
-    m_ActionName: Blade/Defense[/Keyboard/k]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 2c286de6-d3d5-49aa-a5c1-27224172eeb2
-    m_ActionName: Blade/Jump[/Keyboard/space]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6ca024d1-8471-46fb-a76d-7fe50b543df4
-    m_ActionName: Blade/Pause[/Keyboard/enter]
-  m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Blade
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!1001 &8574843582995745516
 PrefabInstance:
   m_ObjectHideFlags: 0

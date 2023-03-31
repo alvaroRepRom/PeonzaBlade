@@ -65,7 +65,6 @@ public class BladeController : MonoBehaviour
 
         gameTime = GameManager.Instance.GameTime();
 
-        gameInputs = GetComponent<GameInputs>();
         gameInputs.OnAttackPerformed += GameInputs_OnAttackPerformed;
         gameInputs.OnDefensePerformed += GameInputs_OnDefensePerformed;
         gameInputs.OnJumpPerformed += GameInputs_OnJumpPerformed;

@@ -29,13 +29,15 @@ public class SpawnBladeManager : MonoBehaviour
 
             GameObject blade = Instantiate( characterListSO.list[characterSelectedIndex].characterPrefab );
 
-            blade.GetComponent<BladeController>().SetGameInputs( playerSelectionDict[i].gameInputs );
+            GameInputs gameInputs = playerSelectionDict[i].gameInputs;
+            gameInputs.SwitchUItoGameInputs();
+            blade.GetComponent<BladeController>().SetGameInputs( gameInputs );
         }
     }
 
     public void SetPlayerCharacter( int playerIndex , PlayerSelectionArgs playerSelection)
     {
-        if ( playerSelectionDict.ContainsKey( playerIndex ) )
+        if ( !playerSelectionDict.ContainsKey( playerIndex ) )
             playerSelectionDict.Add( playerIndex, playerSelection );
     }
     public void CancelPlayerCharacter( int playerIndex )

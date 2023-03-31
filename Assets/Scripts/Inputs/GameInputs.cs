@@ -30,30 +30,30 @@ public class GameInputs : MonoBehaviour
         playerIndex = playerInput.playerIndex;
 
         // Game
-        //moveAction = playerInput.actions.FindAction( "Move" );
-        //playerInput.actions.FindAction( "Attack" ).performed += Attack_performed;
-        //playerInput.actions.FindAction( "Defense" ).performed += Defense_performed;
-        //playerInput.actions.FindAction( "Pause" ).performed += Pause_performed;
-        //playerInput.actions.FindAction( "Jump" ).performed += Jump_performed;
-
-        // UI
-        playerInput.SwitchCurrentActionMap( "UI" );
-        playerInput.actions.FindAction( "Navigation" ).performed += Navigation_performed;
-        playerInput.actions.FindAction( "Submit" ).performed += Submit_performed;
-        playerInput.actions.FindAction( "Cancel" ).performed += CancelUI_performed;
-    }
-
-    private void SwitchUItoGameInputs()
-    {
-        playerInput.currentActionMap.Disable();
-        playerInput.SwitchCurrentActionMap( "Player" );
-        playerInput.currentActionMap.Enable();
-        // Game
         moveAction = playerInput.actions.FindAction( "Move" );
         playerInput.actions.FindAction( "Attack" ).performed += Attack_performed;
         playerInput.actions.FindAction( "Defense" ).performed += Defense_performed;
         playerInput.actions.FindAction( "Pause" ).performed += Pause_performed;
         playerInput.actions.FindAction( "Jump" ).performed += Jump_performed;
+
+        // UI
+        playerInput.actions.FindAction( "Navigation" ).performed += Navigation_performed;
+        playerInput.actions.FindAction( "Submit" ).performed += Submit_performed;
+        playerInput.actions.FindAction( "Cancel" ).performed += CancelUI_performed;
+        playerInput.SwitchCurrentActionMap( "UI" );
+    }
+
+    public void SwitchUItoGameInputs()
+    {
+        //playerInput.currentActionMap.Disable();
+        playerInput.SwitchCurrentActionMap( "Blade" );
+        //playerInput.currentActionMap.Enable();
+        // Game
+        //moveAction = playerInput.actions.FindAction( "Move" );
+        //playerInput.actions.FindAction( "Attack" ).performed += Attack_performed;
+        //playerInput.actions.FindAction( "Defense" ).performed += Defense_performed;
+        //playerInput.actions.FindAction( "Pause" ).performed += Pause_performed;
+        //playerInput.actions.FindAction( "Jump" ).performed += Jump_performed;
     }
 
     private void Navigation_performed( InputAction.CallbackContext ctx )
