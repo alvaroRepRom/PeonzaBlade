@@ -29,7 +29,6 @@ public class MultiplayerInputManager : MonoBehaviour
     private void PlayerInputManager_onPlayerLeft( PlayerInput playerInput )
     {
         playersReadyDict.Remove( playerInput.playerIndex );
-
         OnPlayerLeft?.Invoke( playerInput.playerIndex );
     }
 
@@ -46,8 +45,8 @@ public class MultiplayerInputManager : MonoBehaviour
         playersReadyDict[playerIndex] = true;
 
         int playersJoined = 0;
-        for ( int i = 0; i < playersReadyDict.Count; i++ )
-            if ( playersReadyDict[i] )
+        foreach ( bool playerReady in playersReadyDict.Values )
+            if ( playerReady )
                 playersJoined++;
 
         if ( playersReadyDict.Count == playersJoined )
