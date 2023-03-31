@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class JoinedPlayersUI : MonoBehaviour
@@ -13,10 +10,10 @@ public class JoinedPlayersUI : MonoBehaviour
         MultiplayerInputManager.Instance.OnPlayerJoined += MultiplayerInputManager_OnPlayerJoined;
     }
 
-    private void MultiplayerInputManager_OnPlayerJoined( PlayerInput playerInput )
+    private void MultiplayerInputManager_OnPlayerJoined( GameInputs playerGameInputs , int playerIndex )
     {
         GameObject playerUIObj = Instantiate( playerUIPrefab , transform );
         PlayerJoinedPrefabUI playerJoinedPrefabUI = playerUIObj.GetComponent<PlayerJoinedPrefabUI>();
-        playerJoinedPrefabUI.SetPlayerIndex( playerInput.playerIndex );
+        playerJoinedPrefabUI.SetPlayerInput( playerGameInputs , playerIndex );
     }
 }

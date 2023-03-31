@@ -213,7 +213,7 @@
             "id": "7d86b142-8086-46aa-a917-78322cf04741",
             "actions": [
                 {
-                    "name": "Move",
+                    "name": "Navigation",
                     "type": "PassThrough",
                     "id": "a11c489b-f36e-443c-9c25-a4f21c275264",
                     "expectedControlType": "Vector2",
@@ -248,7 +248,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -259,7 +259,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigation",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -270,7 +270,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigation",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -281,7 +281,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigation",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -292,7 +292,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigation",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -303,7 +303,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Navigation",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },

@@ -9,11 +9,18 @@ public class GameInputs : MonoBehaviour
     public event Action OnPausePerformed;
     public event Action OnJumpPerformed;
 
+    public event Action<NavDirection> OnNavigationPerformed;
+    public enum NavDirection { NONE, UP, RIGHT, DOWN, LEFT }
+    public event Action OnCancelPerformed;
+
 
     private PlayerInput playerInput;
     private InputAction moveAction;
+    private InputAction navigationUIAction;
 
     [SerializeField] private int playerIndex = -1;
+
+    public int PlayerIndex => playerIndex;
 
 
     private void Awake()
@@ -22,12 +29,57 @@ public class GameInputs : MonoBehaviour
 
         playerIndex = playerInput.playerIndex;
 
+        // Game
+        //moveAction = playerInput.actions.FindAction( "Move" );
+        //playerInput.actions.FindAction( "Attack" ).performed += Attack_performed;
+        //playerInput.actions.FindAction( "Defense" ).performed += Defense_performed;
+        //playerInput.actions.FindAction( "Pause" ).performed += Pause_performed;
+        //playerInput.actions.FindAction( "Jump" ).performed += Jump_performed;
+
+        // UI
+        playerInput.SwitchCurrentActionMap( "UI" );
+        navigationUIAction = playerInput.actions.FindAction( "Navigation" );
+        playerInput.actions.FindAction( "Navigation" ).performed += Navigation_performed;
+        playerInput.actions.FindAction( "Cancel" ).performed += CancelUI_performed;
+    }
+
+    private void SwitchUItoGameInputs()
+    {
+        playerInput.currentActionMap.Disable();
+        playerInput.SwitchCurrentActionMap( "Player" );
+        playerInput.currentActionMap.Enable();
+        // Game
         moveAction = playerInput.actions.FindAction( "Move" );
         playerInput.actions.FindAction( "Attack" ).performed += Attack_performed;
         playerInput.actions.FindAction( "Defense" ).performed += Defense_performed;
         playerInput.actions.FindAction( "Pause" ).performed += Pause_performed;
         playerInput.actions.FindAction( "Jump" ).performed += Jump_performed;
+    }
 
+    private void Navigation_performed( InputAction.CallbackContext ctx )
+    {
+        Vector2 navigationInput = ctx.ReadValue<Vector2>().normalized;
+        if ( navigationInput.x > 0.5f ) // Right
+            OnNavigationPerformed?.Invoke( NavDirection.RIGHT );
+        else
+        if ( navigationInput.x < -0.5f ) // Left
+            OnNavigationPerformed?.Invoke( NavDirection.LEFT );
+        else
+        if ( navigationInput.y > 0.5f ) // Up
+            OnNavigationPerformed?.Invoke( NavDirection.UP );
+        else
+        if ( navigationInput.y < -0.5f ) // Down
+            OnNavigationPerformed?.Invoke( NavDirection.UP );
+    }
+
+    public Vector2 NavigationNormalized()
+    {
+        return navigationUIAction.ReadValue<Vector2>().normalized;
+    }
+
+    private void CancelUI_performed( InputAction.CallbackContext obj )
+    {
+        OnCancelPerformed?.Invoke();
     }
 
     private void Jump_performed( InputAction.CallbackContext ctx )

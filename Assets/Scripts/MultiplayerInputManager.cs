@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class MultiplayerInputManager : MonoBehaviour
 {
-    public event Action<PlayerInput> OnPlayerJoined;
+    public event Action<GameInputs, int> OnPlayerJoined;
 
 
     public static MultiplayerInputManager Instance { get; private set; }
@@ -21,6 +21,7 @@ public class MultiplayerInputManager : MonoBehaviour
 
     private void PlayerInputManager_onPlayerJoined( PlayerInput playerInput )
     {
-        OnPlayerJoined?.Invoke( playerInput );
+        GameInputs playerGameInputs = playerInput.gameObject.GetComponent<GameInputs>();
+        OnPlayerJoined?.Invoke( playerGameInputs , playerInput.playerIndex );
     }
 }

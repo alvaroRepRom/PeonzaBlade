@@ -11,4 +11,7 @@ public class CharacterStatsSO :ScriptableObject
     public float defense;
     public float defenseWeight;
     public float jumpSpeed;
+
+    public Sprite characterImage;
+    public GameObject characterPrefab;
 }
