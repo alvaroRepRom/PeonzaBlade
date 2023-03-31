@@ -7,6 +7,7 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
     [SerializeField] private Image playerImage;
     [SerializeField] private TextMeshProUGUI playerIndexText;
     [SerializeField] private Button characterSelectionButton;
+    [SerializeField] private GameObject readyText;
 
     [Header("Characters SO")]
     [SerializeField] private CharacterStatsSO[] charactersStatsSO;
@@ -16,9 +17,23 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
     private int characterSelectIndex = 0;
     private GameInputs.NavDirection navDirection;
 
+    bool isReady = false;
+
+    private void Awake()
+    {
+        MultiplayerInputManager.Instance.OnPlayerLeft += MultiplayerInputManager_OnPlayerLeft;
+    }
+
+    private void MultiplayerInputManager_OnPlayerLeft( int playerLeftIndex )
+    {
+        if ( playerIndex.Equals( playerLeftIndex ) )
+            Destroy( gameObject );
+    }
 
     private void Update()
     {
+        if ( isReady ) return;
+
         int addIndex = 0;
         switch ( navDirection )
         {
@@ -58,9 +73,41 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
     {
         gameInputs = playerGameInputs;
         playerGameInputs.OnNavigationPerformed += GameInputs_OnNavigationPerformed;
-        this.playerIndex = playerIndex + 1;
-        playerIndexText.text = "Player " + this.playerIndex;
-        gameObject.name = "Player " + this.playerIndex;
+        playerGameInputs.OnSubmitPerformed += GameInputs_OnSubmitPerformed;
+        playerGameInputs.OnCancelPerformed += GameInputs_OnCancelPerformed;
+
+        this.playerIndex = playerIndex;
+        playerIndexText.text = "Player " + ( playerIndex + 1 );
+        gameObject.name = "Player " + ( playerIndex + 1 );
+    }
+
+
+
+    private void SelectCharacter()
+    {
+        isReady = true;
+        characterSelectionButton.interactable = false;
+        readyText.SetActive( true );
+        MultiplayerInputManager.Instance.SetPlayerReady( playerIndex );
+    }
+
+    private void ReturnToSelectCharacter()
+    {
+        isReady = false;
+        characterSelectionButton.interactable = true;
+        readyText.SetActive( true );
+        MultiplayerInputManager.Instance.PlayerNotReady( playerIndex );
+    }
+
+    
+    private void GameInputs_OnSubmitPerformed()
+    {
+        SelectCharacter();
+    }
+
+    private void GameInputs_OnCancelPerformed()
+    {
+        ReturnToSelectCharacter();
     }
 
     private void GameInputs_OnNavigationPerformed( GameInputs.NavDirection dir )

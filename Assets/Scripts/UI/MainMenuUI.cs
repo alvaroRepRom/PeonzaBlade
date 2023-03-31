@@ -1,19 +1,11 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MainMenuUI : MonoBehaviour
 {
-    [Header("Buttons")]
-    [SerializeField] private Button bunnyButton;
-
-
     private void Start()
     {
-        
+        MultiplayerInputManager.Instance.OnAllPlayersReady += Hide;
     }
-
-
-
 
     private void Hide() => gameObject.SetActive( false );
 }

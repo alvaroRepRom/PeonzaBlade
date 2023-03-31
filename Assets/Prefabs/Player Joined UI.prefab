@@ -311,6 +311,7 @@ MonoBehaviour:
   playerImage: {fileID: 3695250847223136157}
   playerIndexText: {fileID: 6783001254533735658}
   characterSelectionButton: {fileID: 2368794516239889123}
+  readyText: {fileID: 1458495140126135895}
   charactersStatsSO:
   - {fileID: 11400000, guid: 9a91ed711117d1548a609a8b388eb92c, type: 2}
   - {fileID: 11400000, guid: eb3ddba133420674f9d1da8451fa0636, type: 2}

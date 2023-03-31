@@ -4,12 +4,13 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public event Action OnPlayersReady;
     public event Action OnLaunchBlades;
     public event Action OnGameCompleted;
 
 
     public static GameManager Instance { get; private set; }
+
+
 
     public enum GameState
     {
@@ -37,7 +38,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        MultiplayerInputManager.Instance.OnAllPlayersReady += MultiplayerInputManager_OnAllPlayersReady;
+
         State = GameState.Init;
+    }
+
+    private void MultiplayerInputManager_OnAllPlayersReady()
+    {
+        Preparation();
     }
 
     private void Update()
@@ -66,7 +74,6 @@ public class GameManager : MonoBehaviour
         {
             State = GameState.Start;
             timer = new Timer( startTime );
-            OnPlayersReady?.Invoke();
         }
     }
 

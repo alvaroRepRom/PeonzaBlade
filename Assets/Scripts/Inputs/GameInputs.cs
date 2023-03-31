@@ -11,12 +11,12 @@ public class GameInputs : MonoBehaviour
 
     public event Action<NavDirection> OnNavigationPerformed;
     public enum NavDirection { NONE, UP, RIGHT, DOWN, LEFT }
+    public event Action OnSubmitPerformed;
     public event Action OnCancelPerformed;
 
 
     private PlayerInput playerInput;
     private InputAction moveAction;
-    private InputAction navigationUIAction;
 
     [SerializeField] private int playerIndex = -1;
 
@@ -38,8 +38,8 @@ public class GameInputs : MonoBehaviour
 
         // UI
         playerInput.SwitchCurrentActionMap( "UI" );
-        navigationUIAction = playerInput.actions.FindAction( "Navigation" );
         playerInput.actions.FindAction( "Navigation" ).performed += Navigation_performed;
+        playerInput.actions.FindAction( "Submit" ).performed += Submit_performed;
         playerInput.actions.FindAction( "Cancel" ).performed += CancelUI_performed;
     }
 
@@ -72,9 +72,9 @@ public class GameInputs : MonoBehaviour
             OnNavigationPerformed?.Invoke( NavDirection.UP );
     }
 
-    public Vector2 NavigationNormalized()
+    private void Submit_performed( InputAction.CallbackContext obj )
     {
-        return navigationUIAction.ReadValue<Vector2>().normalized;
+        OnSubmitPerformed?.Invoke();
     }
 
     private void CancelUI_performed( InputAction.CallbackContext obj )
