@@ -31,15 +31,15 @@ public class GameInputs : MonoBehaviour
 
         // Game
         moveAction = playerInput.actions.FindAction( "Move" );
-        playerInput.actions.FindAction( "Attack" ).performed += Attack_performed;
+        playerInput.actions.FindAction( "Attack" ).performed  += Attack_performed;
         playerInput.actions.FindAction( "Defense" ).performed += Defense_performed;
-        playerInput.actions.FindAction( "Pause" ).performed += Pause_performed;
-        playerInput.actions.FindAction( "Jump" ).performed += Jump_performed;
+        playerInput.actions.FindAction( "Pause" ).performed   += Pause_performed;
+        playerInput.actions.FindAction( "Jump" ).performed    += Jump_performed;
 
         // UI
         playerInput.actions.FindAction( "Navigation" ).performed += Navigation_performed;
-        playerInput.actions.FindAction( "Submit" ).performed += Submit_performed;
-        playerInput.actions.FindAction( "Cancel" ).performed += CancelUI_performed;
+        playerInput.actions.FindAction( "Submit" ).performed     += Submit_performed;
+        playerInput.actions.FindAction( "Cancel" ).performed     += CancelUI_performed;
         playerInput.SwitchCurrentActionMap( "UI" );
     }
 
@@ -102,9 +102,13 @@ public class GameInputs : MonoBehaviour
 
     private void OnDestroy()
     {
-        playerInput.actions.FindAction( "Attack" ).performed -= Attack_performed;
+        playerInput.actions.FindAction( "Attack" ).performed  -= Attack_performed;
         playerInput.actions.FindAction( "Defense" ).performed -= Defense_performed;
-        playerInput.actions.FindAction( "Pause" ).performed -= Pause_performed;
-        playerInput.actions.FindAction( "Jump" ).performed -= Jump_performed;
+        playerInput.actions.FindAction( "Pause" ).performed   -= Pause_performed;
+        playerInput.actions.FindAction( "Jump" ).performed    -= Jump_performed;
+
+        playerInput.actions.FindAction( "Navigation" ).performed -= Navigation_performed;
+        playerInput.actions.FindAction( "Submit" ).performed     -= Submit_performed;
+        playerInput.actions.FindAction( "Cancel" ).performed     -= CancelUI_performed;
     }
 }

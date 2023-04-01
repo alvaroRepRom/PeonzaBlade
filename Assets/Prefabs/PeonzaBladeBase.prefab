@@ -159,9 +159,10 @@ GameObject:
   - component: {fileID: 5212743817304744133}
   - component: {fileID: 280864263}
   - component: {fileID: 8574843583652391745}
-  m_Layer: 0
+  - component: {fileID: 1458084924822425199}
+  m_Layer: 7
   m_Name: PeonzaBladeBase
-  m_TagString: Untagged
+  m_TagString: Blade
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -223,6 +224,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50502f8f4fcf1d64f8822ffe529eba97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterStatsSO: {fileID: 0}
+--- !u!114 &1458084924822425199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8574843583652391751}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b4162f95d255ff43b914ca4315d8ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   characterStatsSO: {fileID: 0}

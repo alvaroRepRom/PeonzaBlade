@@ -29,6 +29,7 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
         if ( playerIndex.Equals( playerLeftIndex ) )
         {
             SpawnBladeManager.Instance.CancelPlayerCharacter( playerIndex );
+            Destroy( gameInputs.gameObject );
             Destroy( gameObject );
         }
     }

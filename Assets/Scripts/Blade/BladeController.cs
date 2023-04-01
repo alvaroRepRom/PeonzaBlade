@@ -112,7 +112,8 @@ public class BladeController : MonoBehaviour
         JumpControl();
         turnCharacter.SetCharacterForwardDirection( moveDirection );
         BalanceOverTime();
-    }
+        OutOfBorders();
+    }    
 
     private void FixedUpdate()
     {
@@ -198,11 +199,21 @@ public class BladeController : MonoBehaviour
     }
 
 
+    private void OutOfBorders()
+    {
+        int autoDestroyDistance = 200;
+        if ( Vector3.Distance( Vector3.zero , transform.position ) > autoDestroyDistance )
+            Destroy( gameObject );
+    }
+
     private void OnDestroy()
     {
-        gameInputs.OnAttackPerformed -= GameInputs_OnAttackPerformed;
-        gameInputs.OnDefensePerformed -= GameInputs_OnDefensePerformed;
-        gameInputs.OnJumpPerformed -= GameInputs_OnJumpPerformed;
+        if ( gameInputs != null )
+        {
+            gameInputs.OnAttackPerformed -= GameInputs_OnAttackPerformed;
+            gameInputs.OnDefensePerformed -= GameInputs_OnDefensePerformed;
+            gameInputs.OnJumpPerformed -= GameInputs_OnJumpPerformed;
+        }
     }
 
 }

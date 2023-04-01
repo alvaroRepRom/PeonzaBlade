@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public event Action OnLaunchBlades;
-    public event Action OnGameCompleted;
+    //public event Action OnLaunchBlades;
+    //public event Action OnGameCompleted;
 
 
     public static GameManager Instance { get; private set; }
