@@ -17,6 +17,7 @@ public class ProceduralMesh : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
         CreateShape();
         UpdateMesh();
+        GetComponent<CreateMeshCollider>().SetCollider( mesh );
     }
 
     private void CreateShape()
