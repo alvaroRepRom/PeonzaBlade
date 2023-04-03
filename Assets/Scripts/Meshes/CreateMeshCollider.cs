@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent( typeof( MeshCollider ) )]
 public class CreateMeshCollider : MonoBehaviour
 {
     private MeshCollider meshCollider;
@@ -11,7 +12,6 @@ public class CreateMeshCollider : MonoBehaviour
 
     public void SetCollider( Mesh mesh )
     {
-        //gameObject.AddComponent<MeshCollider>().sharedMesh = mesh;
         meshCollider.sharedMesh = mesh;
     }
 }

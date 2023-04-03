@@ -5,6 +5,8 @@ public class ProceduralMesh : MonoBehaviour
 {
     [SerializeField] private int xSize = 20;
     [SerializeField] private int zSize = 20;
+    [SerializeField][Range(0.01f, 1)] private float cellSize = 0.5f;
+    [SerializeField] private bool createMesh;
 
     private Mesh mesh;
     private Vector3[] vertices;
@@ -13,15 +15,53 @@ public class ProceduralMesh : MonoBehaviour
 
     private void Start()
     {
-        mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
-        CreateShape();
+        if ( createMesh )
+            CreateMesh();
+        else
+            CloneMesh();
+
+        //MoveVertices();
         UpdateMesh();
-        GetComponent<CreateMeshCollider>().SetCollider( mesh );
+
+        gameObject.AddComponent<MeshCollider>().sharedMesh = mesh;
     }
 
-    private void CreateShape()
+    private void CloneMesh()
     {
+        MeshFilter meshFilter = GetComponent<MeshFilter>();
+        Mesh originalMesh     = meshFilter.sharedMesh;
+
+        mesh = new Mesh();
+        mesh.name       = "clone " + originalMesh.name;
+        mesh.vertices   = originalMesh.vertices;
+        mesh.triangles  = originalMesh.triangles;
+        mesh.normals    = originalMesh.normals;
+        mesh.uv         = originalMesh.uv;
+
+        meshFilter.mesh = mesh;
+
+        vertices = mesh.vertices;
+        triangles = mesh.triangles;
+    }
+
+    private void MoveVertices()
+    {
+        vertices = mesh.vertices;
+        triangles = mesh.triangles;
+
+        for ( int i = 0; i < mesh.vertexCount; i++ )
+        {
+            float y = Mathf.PerlinNoise( .1f, 1f ) * Random.Range( 0, 5f);
+            vertices[i] = new Vector3( vertices[i].x , y , vertices[i].z );
+        }
+    }
+
+    private void CreateMesh()
+    {
+        mesh = new Mesh();
+        GetComponent<MeshFilter>().mesh = mesh;
+
+
         vertices = new Vector3[( xSize + 1 ) * ( zSize + 1 )];
 
         for ( int i = 0, z = 0; z <= zSize; z++ )
@@ -29,7 +69,7 @@ public class ProceduralMesh : MonoBehaviour
             for( int x = 0; x <= xSize; x++ )
             {
                 float y = Mathf.PerlinNoise( x * .3f, z * .3f ) * 2f;
-                vertices[i] = new Vector3( x, y , z );
+                vertices[i] = new Vector3( x, y , z ) * cellSize;
                 i++;
             }
         }
@@ -38,7 +78,7 @@ public class ProceduralMesh : MonoBehaviour
         triangles = new int[xSize * zSize * 6];
 
         int vertex = 0; // vertices  count
-        int tris = 0;   // triangles count
+        int tris   = 0; // triangles count
 
         for ( int z = 0; z < zSize; z++ )
         {
@@ -63,7 +103,7 @@ public class ProceduralMesh : MonoBehaviour
     {
         mesh.Clear();
 
-        mesh.vertices = vertices;
+        mesh.vertices  = vertices;
         mesh.triangles = triangles;
 
         mesh.RecalculateNormals();
