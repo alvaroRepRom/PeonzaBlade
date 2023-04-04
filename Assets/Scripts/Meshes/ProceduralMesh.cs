@@ -18,12 +18,18 @@ public class ProceduralMesh : MonoBehaviour
     private void Start()
     {
         if ( createMesh )
+        {
             CreateMesh();
+            UpdateMesh();
+        }
         else
+        {
             CloneMesh();
+        }
 
         MoveVertices();
         UpdateMesh();
+        
 
         gameObject.AddComponent<MeshCollider>().sharedMesh = mesh;
     }
@@ -78,6 +84,7 @@ public class ProceduralMesh : MonoBehaviour
     private void CreateMesh()
     {
         mesh = new Mesh();
+        mesh.name = "MyMesh";
         GetComponent<MeshFilter>().mesh = mesh;
 
 
@@ -125,5 +132,7 @@ public class ProceduralMesh : MonoBehaviour
         mesh.triangles = triangles;
 
         mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+        mesh.RecalculateTangents();
     }
 }
