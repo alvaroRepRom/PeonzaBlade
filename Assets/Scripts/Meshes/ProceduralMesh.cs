@@ -13,6 +13,7 @@ public class ProceduralMesh : MonoBehaviour
     private Mesh mesh;
     private Vector3[] vertices;
     private int[] triangles;
+    private Vector2[] uvs;
 
 
     private void Start()
@@ -88,13 +89,17 @@ public class ProceduralMesh : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
 
 
+        uvs = new Vector2[( xSize + 1 ) * ( zSize + 1 )];
         vertices = new Vector3[( xSize + 1 ) * ( zSize + 1 )];
+        int xHalfSize = xSize / 2;
+        int zHalfSize = zSize / 2;
 
         for ( int i = 0, z = 0; z <= zSize; z++ )
         {
             for( int x = 0; x <= xSize; x++ )
             {
-                vertices[i] = new Vector3( x , 0 , z ) * cellSize;
+                vertices[i] = new Vector3( x - xHalfSize , 0 , z - zHalfSize ) * cellSize;
+                uvs[i]      = new Vector2( ( float )x / xSize , ( float )z / zSize );
                 i++;
             }
         }
@@ -130,9 +135,11 @@ public class ProceduralMesh : MonoBehaviour
 
         mesh.vertices  = vertices;
         mesh.triangles = triangles;
+        mesh.uv = uvs;
 
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
         mesh.RecalculateTangents();
+        mesh.RecalculateUVDistributionMetrics();
     }
 }
