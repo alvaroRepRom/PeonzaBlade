@@ -4,6 +4,8 @@ public class BladeController : MonoBehaviour
 {
     [SerializeField] private CharacterStatsSO characterStatsSO;
 
+    [SerializeField] private LayerMask groundMask;
+
     private CharacterStats characterStats;
     private Rigidbody rb;
     private BladeRotation bladeRotation;
@@ -76,6 +78,7 @@ public class BladeController : MonoBehaviour
         gameInputs.OnJumpPerformed += GameInputs_OnJumpPerformed;
     }
 
+    #region Input Callbacks
     private void GameInputs_OnJumpPerformed()
     {
         if ( !canExecuteAction ) return;
@@ -109,6 +112,7 @@ public class BladeController : MonoBehaviour
         rb.velocity = Vector3.zero;
         rb.AddForce( characterStats.attackSpeed * moveDirection , ForceMode.VelocityChange );
     }
+    #endregion
 
     private void Update()
     {
@@ -116,11 +120,23 @@ public class BladeController : MonoBehaviour
         AttackDash();
         DefenseAction();
         JumpControl();
-        turnCharacter.SetCharacterForwardDirection( moveDirection );
         BalanceOverTime();
         OutOfBorders();
+
+        turnCharacter.SetCharacterForwardDirection( moveDirection );
+        SetBladePerpendicular();
         singleHUD.UpdateHUD( (int)currentRotationSpeed );
-    }    
+    }
+
+    private void SetBladePerpendicular()
+    {
+        float hitDistance = 1;
+        if ( Physics.Raycast( transform.position , -transform.up , out RaycastHit hit , hitDistance , groundMask ) )
+        {
+            float velocity = 0.1f;
+            transform.up = Vector3.Lerp( transform.up , hit.normal , velocity );
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -199,7 +215,7 @@ public class BladeController : MonoBehaviour
 
     private void OnCollisionEnter( Collision collision )
     {
-        if ( collision.gameObject.layer == 6 )
+        if ( 1 << collision.gameObject.layer == groundMask.value )
         {
             isGrounded = true;
         }

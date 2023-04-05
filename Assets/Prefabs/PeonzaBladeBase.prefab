@@ -227,6 +227,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterStatsSO: {fileID: 0}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &1458084924822425199
 MonoBehaviour:
   m_ObjectHideFlags: 0

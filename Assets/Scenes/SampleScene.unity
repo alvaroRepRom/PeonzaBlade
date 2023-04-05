@@ -2215,7 +2215,7 @@ GameObject:
   - component: {fileID: 1084910100}
   - component: {fileID: 1084910102}
   - component: {fileID: 1084910099}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Procedural Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
