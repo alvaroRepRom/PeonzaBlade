@@ -7,6 +7,9 @@ public class SpawnBladeManager : MonoBehaviour
 
 
     [SerializeField] private CharacterListSO characterListSO;
+    [SerializeField] private SingleHUD[] playerSingleHUDs;
+    [SerializeField] private ColorListSO colorListSO;
+
 
     private Dictionary<int, PlayerSelectionArgs> playerSelectionDict = 
         new Dictionary<int, PlayerSelectionArgs>();
@@ -30,13 +33,22 @@ public class SpawnBladeManager : MonoBehaviour
         {
             int characterSelectedIndex = playerSelectionDict[i].characterSelectedIndex;
 
-            GameObject blade = Instantiate( characterListSO.list[characterSelectedIndex].characterPrefab ,
+            GameObject bladeObj = Instantiate( characterListSO.list[characterSelectedIndex].characterPrefab ,
                                             spawnPoints[i] , Quaternion.identity );
 
             GameInputs gameInputs = playerSelectionDict[i].gameInputs;
             gameInputs.SwitchUItoGameInputs();
 
-            blade.GetComponent<BladeController>().SetGameInputs( gameInputs );
+
+            BladeController bladeController = bladeObj.GetComponent<BladeController>();
+            bladeController.SetGameInputs( gameInputs );
+            bladeController.SetSingleHUD( playerSingleHUDs[i] );
+
+            playerSingleHUDs[i].SetPlayerHUD( 
+                characterListSO.list[characterSelectedIndex].characterImage,
+                colorListSO.colorList[i],
+                50,
+                (int)characterListSO.list[characterSelectedIndex].maxRotationSpeed );
         }
     }
 
@@ -50,7 +62,15 @@ public class SpawnBladeManager : MonoBehaviour
             GameObject blade = Instantiate( characterListSO.list[randomCharacterIndex].characterPrefab ,
                                             spawnPoints[playerSelectionDict.Count + i] , Quaternion.identity );
 
-            blade.GetComponent<CPUController>().SetCPUBlade();
+            CPUController cpuController = blade.GetComponent<CPUController>();
+            cpuController.SetCPUBlade();
+            cpuController.SetSingleHUD( playerSingleHUDs[i + playerSelectionDict.Count] );
+
+            playerSingleHUDs[i + playerSelectionDict.Count].SetPlayerHUD(
+                characterListSO.list[randomCharacterIndex].characterImage ,
+                colorListSO.colorList[i + playerSelectionDict.Count] ,
+                100 ,
+                ( int )characterListSO.list[randomCharacterIndex].maxRotationSpeed );
         }
     }    
 

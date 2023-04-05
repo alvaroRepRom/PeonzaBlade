@@ -562,10 +562,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24320bbbe428b5b4388223ac27a40d63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerOneHUD: {fileID: 863285773}
-  playerTwoHUD: {fileID: 542094551}
-  playerThreeHUD: {fileID: 231890943}
-  playerFourHUD: {fileID: 361944039}
 --- !u!1 &473561382
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,6 +1058,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterListSO: {fileID: 11400000, guid: bd10786cbbc071641bdf9a2ed480e4bf, type: 2}
+  playerSingleHUDs:
+  - {fileID: 863285773}
+  - {fileID: 542094551}
+  - {fileID: 231890943}
+  - {fileID: 361944039}
+  colorListSO: {fileID: 11400000, guid: 2940a1f2d55e6324495a56f7dcf7def4, type: 2}
 --- !u!4 &561070679
 Transform:
   m_ObjectHideFlags: 0

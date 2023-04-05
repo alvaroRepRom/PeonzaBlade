@@ -4,6 +4,7 @@ public class CPUController : MonoBehaviour
 {
     [SerializeField] private CharacterStatsSO characterStatsSO;
 
+    private SingleHUD singleHUD;
 
     private void Update()
     {
@@ -15,6 +16,11 @@ public class CPUController : MonoBehaviour
     {
         enabled = true;
         GetComponent<BladeController>().enabled = false;
+    }
+
+    public void SetSingleHUD( SingleHUD singleHUD )
+    {
+        this.singleHUD = singleHUD;
     }
 
     private void OutOfBorders()

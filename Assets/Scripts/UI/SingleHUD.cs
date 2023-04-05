@@ -13,7 +13,7 @@ public class SingleHUD : MonoBehaviour
     private int maxRPM;
     private const float MAX_FILL_AMOUNT = 0.75f;
 
-    private void SetPlayerHUD( Sprite chrarcterSprite , Color playerColor , int currentRPM , int maxRPM )
+    public void SetPlayerHUD( Sprite chrarcterSprite , Color playerColor , int currentRPM , int maxRPM )
     {
         this.maxRPM = maxRPM;
         rpmImage.fillAmount = MAX_FILL_AMOUNT * currentRPM / maxRPM;
@@ -23,7 +23,7 @@ public class SingleHUD : MonoBehaviour
         rpmText.text = currentRPM.ToString();
     }
 
-    private void UpdateHUD( int currentRPM )
+    public void UpdateHUD( int currentRPM )
     {
         rpmImage.fillAmount = MAX_FILL_AMOUNT * currentRPM / maxRPM;
         rpmText.text = currentRPM.ToString();

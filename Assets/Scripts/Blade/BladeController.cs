@@ -37,6 +37,7 @@ public class BladeController : MonoBehaviour
     private const float MAX_INCLINATION_ANGLE = 33.5f;
 
     private GameInputs gameInputs;
+    private SingleHUD singleHUD;
 
     private void Awake()
     {
@@ -51,6 +52,11 @@ public class BladeController : MonoBehaviour
     public void SetGameInputs( GameInputs gameInputs )
     {
         this.gameInputs = gameInputs;
+    }
+
+    public void SetSingleHUD( SingleHUD singleHUD )
+    {
+        this.singleHUD = singleHUD;
     }
 
     private void Start()
@@ -113,6 +119,7 @@ public class BladeController : MonoBehaviour
         turnCharacter.SetCharacterForwardDirection( moveDirection );
         BalanceOverTime();
         OutOfBorders();
+        singleHUD.UpdateHUD( (int)currentRotationSpeed );
     }    
 
     private void FixedUpdate()
@@ -201,7 +208,7 @@ public class BladeController : MonoBehaviour
 
     private void OutOfBorders()
     {
-        int autoDestroyDistance = 200;
+        int autoDestroyDistance = 120;
         if ( Vector3.Distance( Vector3.zero , transform.position ) > autoDestroyDistance )
             Destroy( gameObject );
     }
