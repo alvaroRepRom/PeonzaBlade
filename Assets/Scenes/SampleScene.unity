@@ -2238,8 +2238,8 @@ MonoBehaviour:
   zSize: 40
   cellSize: 0.5
   createMesh: 1
-  radius: 15
-  height: 6
+  radius: 25
+  height: 10
 --- !u!33 &1084910100
 MeshFilter:
   m_ObjectHideFlags: 0

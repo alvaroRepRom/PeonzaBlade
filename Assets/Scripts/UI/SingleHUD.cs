@@ -25,6 +25,9 @@ public class SingleHUD : MonoBehaviour
 
     public void UpdateHUD( int currentRPM )
     {
+        if ( currentRPM < 0 )
+            currentRPM = 0;
+
         rpmImage.fillAmount = MAX_FILL_AMOUNT * currentRPM / maxRPM;
         rpmText.text = currentRPM.ToString();
     }

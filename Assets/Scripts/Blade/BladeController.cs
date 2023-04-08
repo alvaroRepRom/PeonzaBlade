@@ -124,6 +124,7 @@ public class BladeController : MonoBehaviour, IDamagable
         turnCharacter.SetCharacterForwardDirection( moveDirection );
         SetBladePerpendicular();
         singleHUD.UpdateHUD( (int)currentRotationSpeed );
+        CheckRotationHealth();
     }
 
     private void SetBladePerpendicular()
@@ -221,8 +222,14 @@ public class BladeController : MonoBehaviour, IDamagable
                 characterStatsSO.dashAttackDamage : 
                 characterStatsSO.normalAttackDamage 
             );
-            Debug.Log( gameInputs.PlayerIndex );
         }
+    }
+
+    private void CheckRotationHealth()
+    {
+        if ( currentRotationSpeed > 0 ) return;
+
+        Destroy( gameObject );
     }
 
 
@@ -247,7 +254,5 @@ public class BladeController : MonoBehaviour, IDamagable
     {
         float damageReducer = isDefending ? characterStatsSO.specialDefense : characterStatsSO.normalDefense;
         currentRotationSpeed -= damage - damageReducer;
-        Debug.Log( "Attack: " + damage + ", defense: " + damageReducer + 
-            ", currentRotation: " + currentRotationSpeed + ", player" );
     }
 }

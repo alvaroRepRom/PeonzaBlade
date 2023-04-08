@@ -47,8 +47,8 @@ public class CPUController : MonoBehaviour, IDamagable
 
     private void Start()
     {
-        moveSpeed    = characterStatsSO.movementSpeed;
-        rb.mass      = characterStatsSO.weight;
+        moveSpeed = characterStatsSO.movementSpeed;
+        rb.mass   = characterStatsSO.weight;
 
         // This goes to update
         initialRotationSpeed = characterStatsSO.maxRotationSpeed;
@@ -63,6 +63,7 @@ public class CPUController : MonoBehaviour, IDamagable
         turnCharacter.SetCharacterForwardDirection( moveDirection );
         SetBladePerpendicular();
         singleHUD.UpdateHUD( (int)currentRotationSpeed );
+        CheckRotationHealth();
     }
 
     private void FixedUpdate()
@@ -130,8 +131,13 @@ public class CPUController : MonoBehaviour, IDamagable
     {
         float damageReducer = isDefending ? characterStatsSO.specialDefense : characterStatsSO.normalDefense;
         currentRotationSpeed -= damage - damageReducer;
-        Debug.Log( "Attack: " + damage + ", defense: " + damageReducer +
-            ", currentRotation: " + currentRotationSpeed + ", cpu");
+    }
+
+    private void CheckRotationHealth()
+    {
+        if ( currentRotationSpeed > 0 ) return;
+
+        Destroy( gameObject );
     }
 
     private void OnCollisionEnter( Collision collision )
