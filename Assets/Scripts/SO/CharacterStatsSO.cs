@@ -16,6 +16,7 @@ public class CharacterStatsSO :ScriptableObject
     public float dashAttackDamage;
     public float normalDefense;
     public float specialDefense;
+    public float rotationUsedPerSecond;
 
     [Header("Objects")]
     public Sprite characterImage;

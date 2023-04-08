@@ -243,6 +243,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterStatsSO: {fileID: 0}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1001 &8574843582995745516
 PrefabInstance:
   m_ObjectHideFlags: 0

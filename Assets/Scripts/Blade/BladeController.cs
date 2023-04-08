@@ -7,35 +7,33 @@ public class BladeController : MonoBehaviour, IDamagable
     [SerializeField] private LayerMask groundMask;
 
     private Rigidbody rb;
-    private BladeRotation bladeRotation;
+    private BladeRotation    bladeRotation;
     private BladeInclination bladeInclination;
-    private TurnCharacter turnCharacter;
+    private TurnCharacter    turnCharacter;
     private float gameTime;
 
     [Header("Movement")]
-    private float moveSpeed;
-    private float initialRotationSpeed;
-    private float currentRotationSpeed;
+    private float   moveSpeed;
+    private float   initialRotationSpeed;
+    private float   currentRotationSpeed;
     private Vector3 moveDirection;
 
-    private float timeRotating = 30f;
-
     [Header("Actions")]
-    private bool canExecuteAction = true;
+    private bool  canExecuteAction = true;
     private Timer actionTimer = new Timer( 1 );
 
     [Header("Attack")]
     private float secondsAttacking = 0.2f;
-    private bool isAttacking;
+    private bool  isAttacking;
 
     [Header("Defense")]
     private float secondsDefending = 0.6f;
-    private bool isDefending;
+    private bool  isDefending;
 
     [Header("Jump")]
-    private bool isJumping;
+    private bool  isJumping;
     private float fallForceMultiplier = 1.8f;
-    private bool isGrounded = true;
+    private bool  isGrounded = true;
 
     private const float MAX_INCLINATION_ANGLE = 33.5f;
 
@@ -45,9 +43,9 @@ public class BladeController : MonoBehaviour, IDamagable
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        bladeRotation = GetComponentInChildren<BladeRotation>();
+        bladeRotation    = GetComponentInChildren<BladeRotation>();
         bladeInclination = GetComponentInChildren<BladeInclination>();
-        turnCharacter = GetComponentInChildren<TurnCharacter>();
+        turnCharacter    = GetComponentInChildren<TurnCharacter>();        
     }
 
     public void SetGameInputs( GameInputs gameInputs )
@@ -64,7 +62,7 @@ public class BladeController : MonoBehaviour, IDamagable
     private void Start()
     {
         moveSpeed = characterStatsSO.movementSpeed;
-        rb.mass = characterStatsSO.weight;
+        rb.mass   = characterStatsSO.weight;
 
         // This goes to update
         initialRotationSpeed = characterStatsSO.maxRotationSpeed;
@@ -73,9 +71,9 @@ public class BladeController : MonoBehaviour, IDamagable
 
         gameTime = GameManager.Instance.GameTime();
 
-        gameInputs.OnAttackPerformed += GameInputs_OnAttackPerformed;
+        gameInputs.OnAttackPerformed  += GameInputs_OnAttackPerformed;
         gameInputs.OnDefensePerformed += GameInputs_OnDefensePerformed;
-        gameInputs.OnJumpPerformed += GameInputs_OnJumpPerformed;
+        gameInputs.OnJumpPerformed    += GameInputs_OnJumpPerformed;
     }
 
     #region Input Callbacks
@@ -84,8 +82,8 @@ public class BladeController : MonoBehaviour, IDamagable
         if ( !canExecuteAction ) return;
 
         canExecuteAction = false;
-        isJumping = true;
-        isGrounded = false;
+        isJumping   = true;
+        isGrounded  = false;
         rb.velocity = new Vector3( rb.velocity.x , 0 , rb.velocity.z );
         rb.AddForce( characterStatsSO.jumpSpeed * Vector3.up , ForceMode.VelocityChange );
 
@@ -158,26 +156,16 @@ public class BladeController : MonoBehaviour, IDamagable
     private void MoveInput()
     {
         Vector2 moveInput = gameInputs.MovementNormalized();
-        moveDirection = new Vector3( moveInput.x , 0 , moveInput.y );
+        moveDirection     = new Vector3( moveInput.x , 0 , moveInput.y );
     }
 
 
     private void BalanceOverTime()
     {
-        currentRotationSpeed = RotationOverTime();
+        currentRotationSpeed -= Time.deltaTime * characterStatsSO.rotationUsedPerSecond;
         bladeRotation.SetRotationSpeed( currentRotationSpeed );
 
         bladeInclination.SetInclination( InclinationOverRotation() );
-    }
-
-    private float RotationOverTime()
-    {
-        timeRotating -= Time.deltaTime;
-        if ( timeRotating < 0 )
-            timeRotating = 0;
-        float maxTime = 30;
-        return Mathf.Lerp( 0 , initialRotationSpeed , timeRotating / maxTime );
-        //return Mathf.Lerp( initialRotationSpeed , 0 , GameManager.Instance.TimeElapsed() / gameTime );
     }
 
 
@@ -226,13 +214,14 @@ public class BladeController : MonoBehaviour, IDamagable
             isGrounded = true;
         }
         else
-        if ( collision.gameObject.TryGetComponent( out IDamagable damagable ) )
+        if ( collision.gameObject.TryGetComponent( out IDamagable damagableRival ) )
         {
-            damagable.RecieveDamage( 
+            damagableRival.RecieveDamage( 
                 isAttacking ? 
                 characterStatsSO.dashAttackDamage : 
                 characterStatsSO.normalAttackDamage 
             );
+            Debug.Log( gameInputs.PlayerIndex );
         }
     }
 

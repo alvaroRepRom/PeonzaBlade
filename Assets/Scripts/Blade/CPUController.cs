@@ -4,6 +4,8 @@ public class CPUController : MonoBehaviour, IDamagable
 {
     [SerializeField] private CharacterStatsSO characterStatsSO;
 
+    [SerializeField] private LayerMask groundMask;
+
     private Rigidbody rb;
     private BladeRotation bladeRotation;
     private BladeInclination bladeInclination;
@@ -15,8 +17,6 @@ public class CPUController : MonoBehaviour, IDamagable
     private float initialRotationSpeed;
     private float currentRotationSpeed;
     private Vector3 moveDirection;
-
-    private float timeRotating = 30f;
 
     [Header("Actions")]
     private bool canExecuteAction = true;
@@ -37,17 +37,80 @@ public class CPUController : MonoBehaviour, IDamagable
 
     private SingleHUD singleHUD;
 
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        bladeRotation    = GetComponentInChildren<BladeRotation>();
+        bladeInclination = GetComponentInChildren<BladeInclination>();
+        turnCharacter    = GetComponentInChildren<TurnCharacter>();
+    }
+
+    private void Start()
+    {
+        moveSpeed    = characterStatsSO.movementSpeed;
+        rb.mass      = characterStatsSO.weight;
+
+        // This goes to update
+        initialRotationSpeed = characterStatsSO.maxRotationSpeed;
+        currentRotationSpeed = initialRotationSpeed;
+    }
+
     private void Update()
     {
+        BalanceOverTime();
         OutOfBorders();
+
+        turnCharacter.SetCharacterForwardDirection( moveDirection );
+        SetBladePerpendicular();
         singleHUD.UpdateHUD( (int)currentRotationSpeed );
+    }
+
+    private void FixedUpdate()
+    {
+        FallGravity();
+        Move();
+    }
+
+    private void Move()
+    {
+        moveDirection = new Vector3( 0 , 0 , 0 );
+        rb.AddForce( moveSpeed * moveDirection , ForceMode.Force );
+    }
+
+    private void FallGravity()
+    {
+        if ( rb.velocity.y < 0 )
+            rb.AddForce( fallForceMultiplier * Vector3.down , ForceMode.Force );
+    }
+
+    private void SetBladePerpendicular()
+    {
+        float hitDistance = 1;
+        if ( Physics.Raycast( transform.position , -transform.up , out RaycastHit hit , hitDistance , groundMask ) )
+        {
+            float velocity = 0.1f;
+            transform.up = Vector3.Lerp( transform.up , hit.normal , velocity );
+        }
+    }
+
+
+    private void BalanceOverTime()
+    {
+        currentRotationSpeed -= Time.deltaTime * characterStatsSO.rotationUsedPerSecond;
+        bladeRotation.SetRotationSpeed( currentRotationSpeed );
+
+        bladeInclination.SetInclination( InclinationOverRotation() );
+    }
+
+    private float InclinationOverRotation()
+    {
+        return Mathf.Lerp( MAX_INCLINATION_ANGLE , 0 , currentRotationSpeed / characterStatsSO.maxRotationSpeed );
     }
 
 
     public void SetCPUBlade()
     {
         enabled = true;
-        GetComponent<BladeController>().enabled = false;
         Destroy( GetComponent<BladeController>() );
     }
 
@@ -75,9 +138,9 @@ public class CPUController : MonoBehaviour, IDamagable
     {
         if ( collision.gameObject == gameObject ) return;
 
-        if ( collision.gameObject.TryGetComponent( out IDamagable damagable ) )
+        if ( collision.gameObject.TryGetComponent( out IDamagable damagableRival ) )
         {
-            damagable.RecieveDamage(
+            damagableRival.RecieveDamage(
                 isAttacking ?
                 characterStatsSO.dashAttackDamage :
                 characterStatsSO.normalAttackDamage
