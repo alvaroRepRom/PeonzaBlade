@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnBladeManager : MonoBehaviour
 {
+    public event Action OnBladesLaunched;
+
     public static SpawnBladeManager Instance;
 
 
@@ -25,6 +28,7 @@ public class SpawnBladeManager : MonoBehaviour
     {
         SetPlayerBlades();
         SetCPUBlades();
+        OnBladesLaunched?.Invoke();
     }
 
     private void SetPlayerBlades()
@@ -58,7 +62,7 @@ public class SpawnBladeManager : MonoBehaviour
         int cpuBlades = maxNumPlayer - playerSelectionDict.Count;
         for ( int i = 0; i < cpuBlades; i++ )
         {
-            int randomCharacterIndex = Random.Range( 0 , characterListSO.list.Length );
+            int randomCharacterIndex = UnityEngine.Random.Range( 0 , characterListSO.list.Length );
             GameObject blade = Instantiate( characterListSO.list[randomCharacterIndex].characterPrefab ,
                                             spawnPoints[playerSelectionDict.Count + i] , Quaternion.identity );
 

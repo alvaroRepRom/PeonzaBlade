@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     private Timer timer;
     private bool isPlayersSet = false;
+    private bool isLaunched = false;
     private float startTime = 20;
     private float gameTime = 120;
 
@@ -40,8 +41,15 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         MultiplayerInputManager.Instance.OnAllPlayersReady += MultiplayerInputManager_OnAllPlayersReady;
+        SpawnBladeManager.Instance.OnBladesLaunched += SpawnBladeManager_OnBladesLaunched;
 
         State = GameState.Init;
+        timer = new Timer( gameTime );
+    }
+
+    private void SpawnBladeManager_OnBladesLaunched()
+    {
+        isLaunched = true;
     }
 
     private void MultiplayerInputManager_OnAllPlayersReady()
@@ -81,7 +89,7 @@ public class GameManager : MonoBehaviour
 
     private void LaunchBlade()
     {
-        if ( timer.HasTimeUp() )
+        if ( timer.HasTimeUp() || isLaunched )
         {
             timer.SetNewTime( gameTime );
             State = GameState.Game;

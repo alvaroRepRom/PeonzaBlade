@@ -72,7 +72,6 @@ public class ProceduralMesh : MonoBehaviour
 
             float dhorizontal = Mathf.Cos( angle ) * radius - horizontal;
             float dy = Mathf.Sin( angle ) * radius - height;
-            //Debug.Log( dy );
 
             float horizontalAngle = Mathf.Atan2( z , x);
             float dx = dhorizontal * Mathf.Cos( horizontalAngle );

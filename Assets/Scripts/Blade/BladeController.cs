@@ -1,12 +1,11 @@
 using UnityEngine;
 
-public class BladeController : MonoBehaviour
+public class BladeController : MonoBehaviour, IDamagable
 {
     [SerializeField] private CharacterStatsSO characterStatsSO;
 
     [SerializeField] private LayerMask groundMask;
 
-    private CharacterStats characterStats;
     private Rigidbody rb;
     private BladeRotation bladeRotation;
     private BladeInclination bladeInclination;
@@ -18,6 +17,8 @@ public class BladeController : MonoBehaviour
     private float initialRotationSpeed;
     private float currentRotationSpeed;
     private Vector3 moveDirection;
+
+    private float timeRotating = 30f;
 
     [Header("Actions")]
     private bool canExecuteAction = true;
@@ -43,8 +44,6 @@ public class BladeController : MonoBehaviour
 
     private void Awake()
     {
-        characterStats = new CharacterStats( characterStatsSO );
-
         rb = GetComponent<Rigidbody>();
         bladeRotation = GetComponentInChildren<BladeRotation>();
         bladeInclination = GetComponentInChildren<BladeInclination>();
@@ -54,6 +53,7 @@ public class BladeController : MonoBehaviour
     public void SetGameInputs( GameInputs gameInputs )
     {
         this.gameInputs = gameInputs;
+        Destroy ( GetComponent<CPUController>() );
     }
 
     public void SetSingleHUD( SingleHUD singleHUD )
@@ -63,11 +63,11 @@ public class BladeController : MonoBehaviour
 
     private void Start()
     {
-        moveSpeed = characterStats.movementSpeed;
-        rb.mass = characterStats.weight;
+        moveSpeed = characterStatsSO.movementSpeed;
+        rb.mass = characterStatsSO.weight;
 
         // This goes to update
-        initialRotationSpeed = characterStats.maxRotationSpeed;
+        initialRotationSpeed = characterStatsSO.maxRotationSpeed;
         currentRotationSpeed = initialRotationSpeed;
 
 
@@ -87,7 +87,7 @@ public class BladeController : MonoBehaviour
         isJumping = true;
         isGrounded = false;
         rb.velocity = new Vector3( rb.velocity.x , 0 , rb.velocity.z );
-        rb.AddForce( characterStats.jumpSpeed * Vector3.up , ForceMode.VelocityChange );
+        rb.AddForce( characterStatsSO.jumpSpeed * Vector3.up , ForceMode.VelocityChange );
 
     }
 
@@ -98,7 +98,7 @@ public class BladeController : MonoBehaviour
         canExecuteAction = false;
         isDefending = true;
         actionTimer.SetNewTime( secondsDefending );
-        rb.mass = characterStats.defenseWeight;
+        rb.mass = characterStatsSO.defenseWeight;
         rb.velocity = Vector3.zero;
     }
 
@@ -110,7 +110,7 @@ public class BladeController : MonoBehaviour
         isAttacking = true;
         actionTimer.SetNewTime( secondsAttacking );
         rb.velocity = Vector3.zero;
-        rb.AddForce( characterStats.attackSpeed * moveDirection , ForceMode.VelocityChange );
+        rb.AddForce( characterStatsSO.attackSpeed * moveDirection , ForceMode.VelocityChange );
     }
     #endregion
 
@@ -172,14 +172,18 @@ public class BladeController : MonoBehaviour
 
     private float RotationOverTime()
     {
-        return initialRotationSpeed;
+        timeRotating -= Time.deltaTime;
+        if ( timeRotating < 0 )
+            timeRotating = 0;
+        float maxTime = 30;
+        return Mathf.Lerp( 0 , initialRotationSpeed , timeRotating / maxTime );
         //return Mathf.Lerp( initialRotationSpeed , 0 , GameManager.Instance.TimeElapsed() / gameTime );
     }
 
 
     private float InclinationOverRotation()
     {
-        return Mathf.Lerp( MAX_INCLINATION_ANGLE , 0 , currentRotationSpeed / characterStats.maxRotationSpeed );
+        return Mathf.Lerp( MAX_INCLINATION_ANGLE , 0 , currentRotationSpeed / characterStatsSO.maxRotationSpeed );
     }
 
 
@@ -200,7 +204,7 @@ public class BladeController : MonoBehaviour
         {
             canExecuteAction = true;
             isDefending = false;
-            rb.mass = characterStats.weight;
+            rb.mass = characterStatsSO.weight;
         }
     }
 
@@ -215,16 +219,27 @@ public class BladeController : MonoBehaviour
 
     private void OnCollisionEnter( Collision collision )
     {
+        if ( collision.gameObject == gameObject ) return;
+
         if ( 1 << collision.gameObject.layer == groundMask.value )
         {
             isGrounded = true;
+        }
+        else
+        if ( collision.gameObject.TryGetComponent( out IDamagable damagable ) )
+        {
+            damagable.RecieveDamage( 
+                isAttacking ? 
+                characterStatsSO.dashAttackDamage : 
+                characterStatsSO.normalAttackDamage 
+            );
         }
     }
 
 
     private void OutOfBorders()
     {
-        int autoDestroyDistance = 120;
+        int autoDestroyDistance = 80;
         if ( Vector3.Distance( Vector3.zero , transform.position ) > autoDestroyDistance )
             Destroy( gameObject );
     }
@@ -233,10 +248,17 @@ public class BladeController : MonoBehaviour
     {
         if ( gameInputs != null )
         {
-            gameInputs.OnAttackPerformed -= GameInputs_OnAttackPerformed;
+            gameInputs.OnAttackPerformed  -= GameInputs_OnAttackPerformed;
             gameInputs.OnDefensePerformed -= GameInputs_OnDefensePerformed;
-            gameInputs.OnJumpPerformed -= GameInputs_OnJumpPerformed;
+            gameInputs.OnJumpPerformed    -= GameInputs_OnJumpPerformed;
         }
     }
 
+    public void RecieveDamage( float damage )
+    {
+        float damageReducer = isDefending ? characterStatsSO.specialDefense : characterStatsSO.normalDefense;
+        currentRotationSpeed -= damage - damageReducer;
+        Debug.Log( "Attack: " + damage + ", defense: " + damageReducer + 
+            ", currentRotation: " + currentRotationSpeed + ", player" );
+    }
 }
