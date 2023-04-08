@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weight: 5
   movementSpeed: 90
-  maxRotationSpeed: 100
+  maxRotationSpeed: 5800
   attackSpeed: 13
   defenseWeight: 10
   jumpSpeed: 8
