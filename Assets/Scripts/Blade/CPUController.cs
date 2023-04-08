@@ -18,15 +18,12 @@ public class CPUController : MonoBehaviour, IDamagable
     private Vector3 moveDirection;
 
     [Header("Actions")]
-    private bool  canExecuteAction = true;
-    private Timer actionTimer = new Timer( 1 );
+    private Timer actionsTimer = new Timer( 1 );
 
     [Header("Attack")]
-    private float secondsAttacking = 0.2f;
     private bool  isAttacking;
 
     [Header("Defense")]
-    private float secondsDefending = 0.6f;
     private bool  isDefending;
 
     [Header("Jump")]
@@ -98,6 +95,9 @@ public class CPUController : MonoBehaviour, IDamagable
         Vector2 point    = new Vector2( wayPoints[pointIndex].x , wayPoints[pointIndex].z );
 
         if ( Vector2.Distance( localPos , point ) < 0.4f )
+            pointIndex = Random.Range( 0 , wayPoints.Length );
+
+        if ( rb.velocity.magnitude < 0.1f && actionsTimer.HasTimeUp() )
             pointIndex = Random.Range( 0 , wayPoints.Length );
 
         float x = wayPoints[pointIndex].x - localPos.x;
@@ -175,12 +175,12 @@ public class CPUController : MonoBehaviour, IDamagable
 
         if ( collision.gameObject.TryGetComponent( out IDamagable damagableRival ) )
         {
-            pointIndex = Random.Range( 0 , wayPoints.Length );
             damagableRival.RecieveDamage(
                 isAttacking ?
                 characterStatsSO.dashAttackDamage :
                 characterStatsSO.normalAttackDamage
             );
+            pointIndex = Random.Range( 0 , wayPoints.Length );
         }
     }
 }
