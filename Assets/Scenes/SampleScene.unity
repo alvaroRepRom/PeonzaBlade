@@ -1849,7 +1849,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 10.5, z: -15}
+  m_LocalPosition: {x: 0, y: 3.5, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2238,8 +2238,8 @@ MonoBehaviour:
   zSize: 40
   cellSize: 0.5
   createMesh: 1
-  radius: 25
-  height: 10
+  radius: 35
+  height: 18
 --- !u!33 &1084910100
 MeshFilter:
   m_ObjectHideFlags: 0
