@@ -7,31 +7,44 @@ public class CPUController : MonoBehaviour, IDamagable
     [SerializeField] private LayerMask groundMask;
 
     private Rigidbody rb;
-    private BladeRotation bladeRotation;
+    private BladeRotation    bladeRotation;
     private BladeInclination bladeInclination;
-    private TurnCharacter turnCharacter;
-    private float gameTime;
+    private TurnCharacter    turnCharacter;
 
     [Header("Movement")]
-    private float moveSpeed;
-    private float initialRotationSpeed;
-    private float currentRotationSpeed;
+    private float   moveSpeed;
+    private float   initialRotationSpeed;
+    private float   currentRotationSpeed;
     private Vector3 moveDirection;
 
     [Header("Actions")]
-    private bool canExecuteAction = true;
+    private bool  canExecuteAction = true;
     private Timer actionTimer = new Timer( 1 );
 
     [Header("Attack")]
     private float secondsAttacking = 0.2f;
-    private bool isAttacking;
+    private bool  isAttacking;
 
     [Header("Defense")]
     private float secondsDefending = 0.6f;
-    private bool isDefending;
+    private bool  isDefending;
 
     [Header("Jump")]
     private float fallForceMultiplier = 1.8f;
+
+    private int       pointIndex;
+    private Vector3[] wayPoints = {
+        new Vector3(   0 , 0 ,   0 ),
+        new Vector3(  10 , 0 ,   0 ),
+        new Vector3( -10 , 0 ,   0 ),
+        new Vector3(   0 , 0 ,  10 ),
+        new Vector3(   0 , 0 , -10 ),
+        new Vector3(   8 , 0 ,   8 ),
+        new Vector3(   8 , 0 ,  -8 ),
+        new Vector3(  -8 , 0 ,   8 ),
+        new Vector3(  -8 , 0 ,  -8 )
+    };
+
 
     private const float MAX_INCLINATION_ANGLE = 33.5f;
 
@@ -49,6 +62,7 @@ public class CPUController : MonoBehaviour, IDamagable
     {
         moveSpeed = characterStatsSO.movementSpeed;
         rb.mass   = characterStatsSO.weight;
+        pointIndex = Random.Range( 0, wayPoints.Length );
 
         // This goes to update
         initialRotationSpeed = characterStatsSO.maxRotationSpeed;
@@ -74,8 +88,23 @@ public class CPUController : MonoBehaviour, IDamagable
 
     private void Move()
     {
-        moveDirection = new Vector3( 0 , 0 , 0 );
+        moveDirection = MoveDirectionNormalized();
         rb.AddForce( moveSpeed * moveDirection , ForceMode.Force );
+    }
+
+    private Vector3 MoveDirectionNormalized()
+    {
+        Vector2 localPos = new Vector2( transform.position.x , transform.position.z );
+        Vector2 point    = new Vector2( wayPoints[pointIndex].x , wayPoints[pointIndex].z );
+
+        if ( Vector2.Distance( localPos , point ) < 0.4f )
+            pointIndex = Random.Range( 0 , wayPoints.Length );
+
+        float x = wayPoints[pointIndex].x - localPos.x;
+        float z = wayPoints[pointIndex].z - localPos.y;
+        Vector3 direction = new Vector3( x , 0 , z );
+
+        return direction.normalized;
     }
 
     private void FallGravity()
@@ -146,6 +175,7 @@ public class CPUController : MonoBehaviour, IDamagable
 
         if ( collision.gameObject.TryGetComponent( out IDamagable damagableRival ) )
         {
+            pointIndex = Random.Range( 0 , wayPoints.Length );
             damagableRival.RecieveDamage(
                 isAttacking ?
                 characterStatsSO.dashAttackDamage :

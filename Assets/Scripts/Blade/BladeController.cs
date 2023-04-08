@@ -10,7 +10,6 @@ public class BladeController : MonoBehaviour, IDamagable
     private BladeRotation    bladeRotation;
     private BladeInclination bladeInclination;
     private TurnCharacter    turnCharacter;
-    private float gameTime;
 
     [Header("Movement")]
     private float   moveSpeed;
@@ -67,9 +66,6 @@ public class BladeController : MonoBehaviour, IDamagable
         // This goes to update
         initialRotationSpeed = characterStatsSO.maxRotationSpeed;
         currentRotationSpeed = initialRotationSpeed;
-
-
-        gameTime = GameManager.Instance.GameTime();
 
         gameInputs.OnAttackPerformed  += GameInputs_OnAttackPerformed;
         gameInputs.OnDefensePerformed += GameInputs_OnDefensePerformed;
