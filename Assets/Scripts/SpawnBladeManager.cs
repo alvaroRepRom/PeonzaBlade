@@ -48,6 +48,8 @@ public class SpawnBladeManager : MonoBehaviour
             bladeController.SetGameInputs( gameInputs );
             bladeController.SetSingleHUD( playerSingleHUDs[i] );
 
+            bladeObj.GetComponent<PlayerColorUI>().SetPlayerColor( colorListSO.colorList[i] );
+
             playerSingleHUDs[i].SetPlayerHUD( 
                 characterListSO.list[characterSelectedIndex].characterImage,
                 colorListSO.colorList[i],
@@ -69,6 +71,8 @@ public class SpawnBladeManager : MonoBehaviour
             CPUController cpuController = blade.GetComponent<CPUController>();
             cpuController.SetCPUBlade();
             cpuController.SetSingleHUD( playerSingleHUDs[i + playerSelectionDict.Count] );
+
+            blade.GetComponent<PlayerColorUI>().SetPlayerColor( colorListSO.colorList[i + playerSelectionDict.Count] );
 
             playerSingleHUDs[i + playerSelectionDict.Count].SetPlayerHUD(
                 characterListSO.list[randomCharacterIndex].characterImage ,
