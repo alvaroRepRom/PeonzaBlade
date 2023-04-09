@@ -69,7 +69,7 @@ public class SpawnBladeManager : MonoBehaviour
                                             spawnPoints[playerSelectionDict.Count + i] , Quaternion.identity );
 
             CPUController cpuController = blade.GetComponent<CPUController>();
-            cpuController.SetCPUBlade();
+            cpuController.SetCPUBlade( i + playerSelectionDict.Count );
             cpuController.SetSingleHUD( playerSingleHUDs[i + playerSelectionDict.Count] );
 
             blade.GetComponent<PlayerColorUI>().SetPlayerColor( colorListSO.colorList[i + playerSelectionDict.Count] );

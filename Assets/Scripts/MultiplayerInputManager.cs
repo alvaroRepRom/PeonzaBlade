@@ -53,4 +53,6 @@ public class MultiplayerInputManager : MonoBehaviour
     }
 
     public void PlayerNotReady( int playerIndex ) => playersReadyDict[playerIndex] = false;
+
+    public int GetMaxNumOfPlayers() => playerInputManager.maxPlayerCount;
 }

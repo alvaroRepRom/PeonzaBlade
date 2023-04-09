@@ -29,7 +29,7 @@ public class JoinedPlayersUI : MonoBehaviour
         pushToJoinObj.transform.SetAsLastSibling();
         numOfPlayersConnected++;
 
-        if ( numOfPlayersConnected >= 4 )
+        if ( numOfPlayersConnected >= MultiplayerInputManager.Instance.GetMaxNumOfPlayers() )
             pushToJoinObj.SetActive( false );
     }
 

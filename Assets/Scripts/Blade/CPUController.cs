@@ -46,6 +46,7 @@ public class CPUController : MonoBehaviour, IDamagable
     private const float MAX_INCLINATION_ANGLE = 33.5f;
 
     private SingleHUD singleHUD;
+    private int CPUNumber;
 
     private void Awake()
     {
@@ -64,6 +65,8 @@ public class CPUController : MonoBehaviour, IDamagable
         // This goes to update
         initialRotationSpeed = characterStatsSO.maxRotationSpeed;
         currentRotationSpeed = initialRotationSpeed;
+
+        GameManager.Instance.OnWinnerDecided += SetThisAsWinner;
     }
 
     private void Update()
@@ -138,8 +141,9 @@ public class CPUController : MonoBehaviour, IDamagable
     }
 
 
-    public void SetCPUBlade()
+    public void SetCPUBlade( int cpuNumber )
     {
+        CPUNumber = cpuNumber;
         enabled = true;
         Destroy( GetComponent<BladeController>() );
     }
@@ -153,7 +157,11 @@ public class CPUController : MonoBehaviour, IDamagable
     {
         int autoDestroyDistance = 200;
         if ( Vector3.Distance( Vector3.zero , transform.position ) > autoDestroyDistance )
+        {
+            if ( GameManager.Instance )
+                GameManager.Instance.BladeHasDied( "CPU " + CPUNumber );
             Destroy( gameObject );
+        }
     }
 
     public void RecieveDamage( float damage )
@@ -166,6 +174,8 @@ public class CPUController : MonoBehaviour, IDamagable
     {
         if ( currentRotationSpeed > 0 ) return;
 
+        if ( GameManager.Instance )
+            GameManager.Instance.BladeHasDied( "CPU " + CPUNumber );
         Destroy( gameObject );
     }
 
@@ -182,5 +192,13 @@ public class CPUController : MonoBehaviour, IDamagable
             );
             pointIndex = Random.Range( 0 , wayPoints.Length );
         }
+    }
+
+    private void SetThisAsWinner() => GameManager.Instance.SetWinner( "CPU " + CPUNumber );
+
+    private void OnDestroy()
+    {
+        if ( GameManager.Instance )
+            GameManager.Instance.OnWinnerDecided -= SetThisAsWinner;
     }
 }

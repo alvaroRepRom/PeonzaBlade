@@ -70,6 +70,8 @@ public class BladeController : MonoBehaviour, IDamagable
         gameInputs.OnAttackPerformed  += GameInputs_OnAttackPerformed;
         gameInputs.OnDefensePerformed += GameInputs_OnDefensePerformed;
         gameInputs.OnJumpPerformed    += GameInputs_OnJumpPerformed;
+
+        GameManager.Instance.OnWinnerDecided += SetThisAsWinner;
     }
 
     #region Input Callbacks
@@ -225,6 +227,11 @@ public class BladeController : MonoBehaviour, IDamagable
     {
         if ( currentRotationSpeed > 0 ) return;
 
+        if ( GameManager.Instance )
+        {
+            int number = gameInputs.PlayerIndex + 1;
+            GameManager.Instance.BladeHasDied( "Player " + number );
+        }
         Destroy( gameObject );
     }
 
@@ -233,11 +240,27 @@ public class BladeController : MonoBehaviour, IDamagable
     {
         int autoDestroyDistance = 80;
         if ( Vector3.Distance( Vector3.zero , transform.position ) > autoDestroyDistance )
+        {
+            if ( GameManager.Instance )
+            {
+                int number = gameInputs.PlayerIndex + 1;
+                GameManager.Instance.BladeHasDied( "Player " + number );
+            }
             Destroy( gameObject );
+        }
+    }
+
+    private void SetThisAsWinner()
+    {
+        int number = gameInputs.PlayerIndex + 1;
+        GameManager.Instance.SetWinner( "Player " + number );
     }
 
     private void OnDestroy()
     {
+        if ( GameManager.Instance )
+            GameManager.Instance.OnWinnerDecided -= SetThisAsWinner;
+
         if ( gameInputs != null )
         {
             gameInputs.OnAttackPerformed  -= GameInputs_OnAttackPerformed;
