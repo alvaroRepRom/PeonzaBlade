@@ -17,8 +17,8 @@ public class SpawnBladeManager : MonoBehaviour
     private Dictionary<int, PlayerSelectionArgs> playerSelectionDict = 
         new Dictionary<int, PlayerSelectionArgs>();
     private Vector3[] spawnPoints = new Vector3[] {
-        new Vector3(-10,0,-10), new Vector3(10,0,-10),
         new Vector3(-10,0, 10), new Vector3(10,0, 10),
+        new Vector3(-10,0,-10), new Vector3(10,0,-10),
     };
 
     private void Awake() => Instance = this;
