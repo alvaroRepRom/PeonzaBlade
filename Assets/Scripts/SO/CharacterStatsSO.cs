@@ -21,4 +21,9 @@ public class CharacterStatsSO :ScriptableObject
     [Header("Objects")]
     public Sprite characterImage;
     public GameObject characterPrefab;
+
+    [Header("Show Stats")]
+    public float attack;
+    public float defense;
+    public float agility;
 }

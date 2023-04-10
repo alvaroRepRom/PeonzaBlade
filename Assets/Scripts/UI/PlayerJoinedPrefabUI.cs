@@ -12,6 +12,11 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
     [Header("Characters SO")]
     [SerializeField] private CharacterListSO characterListSO;
 
+    [Header("Fill Bars")]
+    [SerializeField] private Image attackImage;
+    [SerializeField] private Image defenseImage;
+    [SerializeField] private Image agilityImage;
+
     GameInputs gameInputs;
     private int playerIndex;
     private int characterSelectIndex = 0;
@@ -64,6 +69,7 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
                 characterSelectIndex = characterListSO.list.Length - 1;
 
             SetPlayerImage();
+            ChangeBarLenght();
             navDirection = GameInputs.NavDirection.NONE;
         }
     }
@@ -84,6 +90,15 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
         playerIndexText.text = "Player " + ( playerIndex + 1 );
         gameObject.name = "Player " + ( playerIndex + 1 );
     }
+
+
+    private void ChangeBarLenght()
+    {
+        attackImage.fillAmount = characterListSO.list[characterSelectIndex].attack;
+        defenseImage.fillAmount = characterListSO.list[characterSelectIndex].defense;
+        agilityImage.fillAmount = characterListSO.list[characterSelectIndex].agility;
+    }
+
 
     
     private void GameInputs_OnSubmitPerformed()
