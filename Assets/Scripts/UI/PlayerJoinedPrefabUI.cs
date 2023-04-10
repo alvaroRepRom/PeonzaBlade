@@ -11,6 +11,8 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
 
     [Header("Characters SO")]
     [SerializeField] private CharacterListSO characterListSO;
+    [SerializeField] private ColorListSO playerColorSO;
+    [SerializeField] private Image playerColorImage;
 
     [Header("Fill Bars")]
     [SerializeField] private Image attackImage;
@@ -89,6 +91,7 @@ public class PlayerJoinedPrefabUI : MonoBehaviour
         this.playerIndex = playerIndex;
         playerIndexText.text = "Player " + ( playerIndex + 1 );
         gameObject.name = "Player " + ( playerIndex + 1 );
+        playerColorImage.color = playerColorSO.colorList[playerIndex];
     }
 
 
