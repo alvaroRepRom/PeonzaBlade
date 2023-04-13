@@ -47,6 +47,7 @@ public class CPUController : MonoBehaviour, IDamagable
 
     private SingleHUD singleHUD;
     private SoundEffects soundEffects;
+    private BladeParticles bladeParticles;
     private int CPUNumber;
 
     private void Awake()
@@ -56,6 +57,7 @@ public class CPUController : MonoBehaviour, IDamagable
         bladeInclination = GetComponentInChildren<BladeInclination>();
         turnCharacter    = GetComponentInChildren<TurnCharacter>();
         soundEffects     = GetComponentInChildren<SoundEffects>();
+        bladeParticles = GetComponentInChildren<BladeParticles>();
     }
 
     private void Start()
@@ -188,6 +190,7 @@ public class CPUController : MonoBehaviour, IDamagable
         if ( collision.gameObject.TryGetComponent( out IDamagable damagableRival ) )
         {
             soundEffects.PlayShock();
+            bladeParticles.SetShockParticles();
             damagableRival.RecieveDamage(
                 isAttacking ?
                 characterStatsSO.dashAttackDamage :

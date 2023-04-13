@@ -39,6 +39,7 @@ public class BladeController : MonoBehaviour, IDamagable
     private GameInputs gameInputs;
     private SingleHUD singleHUD;
     private SoundEffects soundEffects;
+    private BladeParticles bladeParticles;
 
     private void Awake()
     {
@@ -47,6 +48,7 @@ public class BladeController : MonoBehaviour, IDamagable
         bladeInclination = GetComponentInChildren<BladeInclination>();
         turnCharacter    = GetComponentInChildren<TurnCharacter>();
         soundEffects     = GetComponentInChildren<SoundEffects>();
+        bladeParticles   = GetComponentInChildren<BladeParticles>();
     }
 
     public void SetGameInputs( GameInputs gameInputs )
@@ -121,6 +123,8 @@ public class BladeController : MonoBehaviour, IDamagable
         JumpControl();
         BalanceOverTime();
         OutOfBorders();
+
+        bladeParticles.SetMoveParticles( !isJumping );
 
         turnCharacter.SetCharacterForwardDirection( moveDirection );
         SetBladePerpendicular();
@@ -219,6 +223,7 @@ public class BladeController : MonoBehaviour, IDamagable
         if ( collision.gameObject.TryGetComponent( out IDamagable damagableRival ) )
         {
             soundEffects.PlayShock();
+            bladeParticles.SetShockParticles();
             damagableRival.RecieveDamage( 
                 isAttacking ? 
                 characterStatsSO.dashAttackDamage : 
