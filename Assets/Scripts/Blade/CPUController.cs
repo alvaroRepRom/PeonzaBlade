@@ -46,6 +46,7 @@ public class CPUController : MonoBehaviour, IDamagable
     private const float MAX_INCLINATION_ANGLE = 33.5f;
 
     private SingleHUD singleHUD;
+    private SoundEffects soundEffects;
     private int CPUNumber;
 
     private void Awake()
@@ -54,6 +55,7 @@ public class CPUController : MonoBehaviour, IDamagable
         bladeRotation    = GetComponentInChildren<BladeRotation>();
         bladeInclination = GetComponentInChildren<BladeInclination>();
         turnCharacter    = GetComponentInChildren<TurnCharacter>();
+        soundEffects     = GetComponentInChildren<SoundEffects>();
     }
 
     private void Start()
@@ -185,6 +187,7 @@ public class CPUController : MonoBehaviour, IDamagable
 
         if ( collision.gameObject.TryGetComponent( out IDamagable damagableRival ) )
         {
+            soundEffects.PlayShock();
             damagableRival.RecieveDamage(
                 isAttacking ?
                 characterStatsSO.dashAttackDamage :

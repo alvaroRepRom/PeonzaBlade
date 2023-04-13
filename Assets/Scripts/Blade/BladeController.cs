@@ -38,13 +38,15 @@ public class BladeController : MonoBehaviour, IDamagable
 
     private GameInputs gameInputs;
     private SingleHUD singleHUD;
+    private SoundEffects soundEffects;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         bladeRotation    = GetComponentInChildren<BladeRotation>();
         bladeInclination = GetComponentInChildren<BladeInclination>();
-        turnCharacter    = GetComponentInChildren<TurnCharacter>();        
+        turnCharacter    = GetComponentInChildren<TurnCharacter>();
+        soundEffects     = GetComponentInChildren<SoundEffects>();
     }
 
     public void SetGameInputs( GameInputs gameInputs )
@@ -84,7 +86,7 @@ public class BladeController : MonoBehaviour, IDamagable
         isGrounded  = false;
         rb.velocity = new Vector3( rb.velocity.x , 0 , rb.velocity.z );
         rb.AddForce( characterStatsSO.jumpSpeed * Vector3.up , ForceMode.VelocityChange );
-
+        soundEffects.PlayDash();
     }
 
     private void GameInputs_OnDefensePerformed()
@@ -107,6 +109,7 @@ public class BladeController : MonoBehaviour, IDamagable
         actionTimer.SetNewTime( secondsAttacking );
         rb.velocity = Vector3.zero;
         rb.AddForce( characterStatsSO.attackSpeed * moveDirection , ForceMode.VelocityChange );
+        soundEffects.PlayDash();
     }
     #endregion
 
@@ -215,6 +218,7 @@ public class BladeController : MonoBehaviour, IDamagable
         else
         if ( collision.gameObject.TryGetComponent( out IDamagable damagableRival ) )
         {
+            soundEffects.PlayShock();
             damagableRival.RecieveDamage( 
                 isAttacking ? 
                 characterStatsSO.dashAttackDamage : 
