@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: HellephantCharacterStatsSO
   m_EditorClassIdentifier: 
   weight: 18
-  movementSpeed: 120
+  movementSpeed: 130
   maxRotationSpeed: 200
   attackSpeed: 6
   defenseWeight: 25
   jumpSpeed: 2
-  normalAttackDamage: 100
-  dashAttackDamage: 150
-  normalDefense: 50
-  specialDefense: 80
+  normalAttackDamage: 6
+  dashAttackDamage: 7
+  normalDefense: 4
+  specialDefense: 5
   rotationUsedPerSecond: 0.8
   characterImage: {fileID: 21300000, guid: dd96138c87c8edb4cb87c1a4f497013b, type: 3}
   characterPrefab: {fileID: 5106007321067218409, guid: 400606db050e8de418474725fe1ca61d, type: 3}

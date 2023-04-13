@@ -18,10 +18,10 @@ MonoBehaviour:
   attackSpeed: 13
   defenseWeight: 10
   jumpSpeed: 8
-  normalAttackDamage: 100
-  dashAttackDamage: 150
-  normalDefense: 50
-  specialDefense: 80
+  normalAttackDamage: 8
+  dashAttackDamage: 10
+  normalDefense: 1
+  specialDefense: 2
   rotationUsedPerSecond: 1
   characterImage: {fileID: 21300000, guid: c5049a38de2cee64daf6da333270badd, type: 3}
   characterPrefab: {fileID: 4095046136649752931, guid: ecad482bc1d529f438ef1385b39b214b, type: 3}
